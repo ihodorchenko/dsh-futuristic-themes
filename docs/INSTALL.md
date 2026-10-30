@@ -103,8 +103,11 @@ within a second or two and the renderer loads the plugin live.
 ## Updating a GitHub install
 
 1. `tools/install-desktop.sh --update` (or `pnpm update dsh-futuristic-themes` in the profile).
-2. Reload the app window if the HMR revision does not change (identical content may keep the
-   cached bundle revision; an actual code change bumps it automatically).
+2. Restart DeepSeek Harness to be sure the new build is live. The client module registry may
+   keep serving its cached bundle revision after a dependency update (identical content keeps
+   the same revision by design), so a window reload is not guaranteed to pick up a GitHub
+   update; the profile change itself is durable and is applied on the next app start. The
+   current running session keeps working throughout.
 
 ## Rollback
 
