@@ -1,6 +1,6 @@
 {
   "name": "dsh-futuristic-themes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Three cinematic sci-fi themes for DeepSeek Harness: Nostromo Amber, Omni-tool, Renaissance Steel.",
   "type": "module",
   "main": "lib/index.js",
