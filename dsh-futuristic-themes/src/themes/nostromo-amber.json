@@ -1,0 +1,60 @@
+{
+  "id": "nostromo-amber",
+  "colorScheme": "dark",
+  "label": {
+    "en": "Nostromo Amber",
+    "zh": "诺斯特罗莫 · 琥珀"
+  },
+  "tagline": {
+    "en": "ALIEN / ROMULUS INSPIRED",
+    "zh": "灵感源自《异形：夺命舰》"
+  },
+  "description": {
+    "en": "Amber phosphor CRT terminal on almost-black warm metal: 1 px frames, monospace type, restrained glow.",
+    "zh": "近乎全黑的暖金属底色上的琥珀磷光 CRT 终端：1 像素细框、等宽字体与克制的辉光。"
+  },
+  "accent": "#FFB000",
+  "swatches": [
+    "#0B0804",
+    "#FFB000",
+    "#FFD98A",
+    "#FF4A1C",
+    "#7FBF3F"
+  ],
+  "roles": {
+    "bg": "#0B0804",
+    "bgDeep": "#070502",
+    "surface1": "#161008",
+    "surface2": "#20170A",
+    "surface3": "#2C2111",
+    "overlay": "#342713",
+    "border": "#3A2A10",
+    "dim": "#8A5A00",
+    "text": "#FFD98A",
+    "secondary": "#E0AC45",
+    "primary": "#FFB000",
+    "bright": "#FFCC33",
+    "warning": "#FF4A1C",
+    "ok": "#7FBF3F",
+    "info": "#ECC469",
+    "sidebarFill": "linear-gradient(180deg, #171006 0%, #0B0804 100%)",
+    "menuFill": "rgba(40, 31, 16, 0.96)"
+  },
+  "overrides": {
+    "--dsw-alias-border-l2": "rgba(255, 176, 0, 0.18)",
+    "--dsw-alias-border-l3": "rgba(255, 176, 0, 0.58)",
+    "--dsw-alias-border-l4": "rgba(255, 176, 0, 0.7)",
+    "--dsw-alias-separator-primary": "rgba(255, 176, 0, 0.18)",
+    "--dsw-alias-label-caption": "#9F7A2C",
+    "--dsw-alias-label-dimmed": "#966300",
+    "--dsw-alias-state-idle-primary": "#8A5A00",
+    "--dsw-specific-sidebar-nav-item-active-accent": "rgba(255, 176, 0, 0.62)"
+  },
+  "preview": {
+    "notification": {
+      "kind": "warning",
+      "text": "High load detected"
+    },
+    "metrics": "bars"
+  }
+}

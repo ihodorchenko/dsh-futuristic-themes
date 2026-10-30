@@ -1,0 +1,18 @@
+[
+ {
+  "js": "localStorage.setItem('dsh-futuristic-themes:active','nostromo-amber'); location.reload();",
+  "wait": 1.8
+ },
+ {
+  "js": "document.querySelector('[aria-label=\"Account menu\"]').click()",
+  "wait": 0.9
+ },
+ {
+  "js": "Array.from(document.querySelectorAll('[role=menuitem]')).filter(function(e){return /Settings/.test(e.textContent||'')})[0].click()",
+  "wait": 1.4
+ },
+ {
+  "js": "Array.from(document.querySelectorAll('[role=dialog] button')).filter(function(b){return (b.textContent||'').trim()==='Dark'})[0].click()",
+  "wait": 1.5
+ }
+]

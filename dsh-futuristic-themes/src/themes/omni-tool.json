@@ -1,0 +1,45 @@
+{
+  "id": "omni-tool",
+  "colorScheme": "dark",
+  "label": { "en": "Omni-tool", "zh": "万用工具" },
+  "tagline": { "en": "MASS EFFECT INSPIRED", "zh": "《质量效应》灵感" },
+  "description": {
+    "en": "Holographic HUD: orange action accent on dark blue glass, cold cyan secondary signals and a faint projection grid.",
+    "zh": "全息 HUD：深蓝玻璃上的橙色操作强调、冷青色次级信号与微弱投影网格。"
+  },
+  "accent": "#FF9A1F",
+  "swatches": ["#0A0D12", "#FF9A1F", "#FFC266", "#3FD0FF", "#F2E3C9"],
+  "roles": {
+    "bg": "#0A0D12",
+    "bgDeep": "#06080D",
+    "surface1": "#121821",
+    "surface2": "#182130",
+    "surface3": "#1F2B3C",
+    "overlay": "#2A3A4E",
+    "border": "#7A4E18",
+    "dim": "#7C8CA4",
+    "text": "#F2E3C9",
+    "secondary": "#A9BCD4",
+    "primary": "#FF9A1F",
+    "bright": "#FFC266",
+    "warning": "#FF4A3D",
+    "ok": "#31DBC5",
+    "info": "#3FD0FF",
+    "sidebarFill": "linear-gradient(180deg, #172433 0%, #0A0D12 100%)",
+    "menuFill": "rgba(26, 37, 52, 0.94)"
+  },
+  "overrides": {
+    "--dsw-alias-border-l1": "rgba(255, 154, 31, 0.13)",
+    "--dsw-alias-border-l2": "rgba(255, 154, 31, 0.24)",
+    "--dsw-alias-border-l3": "rgba(255, 154, 31, 0.52)",
+    "--dsw-alias-border-l4": "rgba(255, 194, 102, 0.38)",
+    "--dsw-alias-border-l2-darkmode-thin": "rgba(255, 154, 31, 0.15)",
+    "--dsw-alias-separator-primary": "rgba(255, 154, 31, 0.18)",
+    "--dsw-alias-settings-card-stroke": "rgba(255, 194, 102, 0.34)",
+    "--dsw-alias-state-idle-primary": "#63738C"
+  },
+  "preview": {
+    "notification": { "kind": "info", "text": "Processing batch..." },
+    "metrics": "gauge"
+  }
+}

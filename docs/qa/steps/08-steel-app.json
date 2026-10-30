@@ -1,0 +1,18 @@
+[
+ {
+  "js": "document.querySelector('[aria-label=\"Account menu\"]').click()",
+  "wait": 0.9
+ },
+ {
+  "js": "Array.from(document.querySelectorAll('[role=menuitem]')).filter(function(e){return /Settings/.test(e.textContent||'')})[0].click()",
+  "wait": 1.5
+ },
+ {
+  "js": "Array.from(document.querySelectorAll('.dshft-card')).filter(function(c){return new RegExp('renaissance steel','i').test(c.textContent||'')})[0].click()",
+  "wait": 1.6
+ },
+ {
+  "js": "Array.from(document.querySelectorAll('[role=dialog] button')).filter(function(b){return (b.textContent||'').trim()==='Close'})[0].click()",
+  "wait": 1.2
+ }
+]

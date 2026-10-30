@@ -1,0 +1,4 @@
+/* Decorative effect layer. Every rule is gated on the per-theme body
+   attribute AND on the effects switch, so turning decorations off is one
+   localStorage flag away and reduced motion never animates. Theme sheets
+   below paint #dsh-ft-overlay::before / ::after. */

@@ -1,0 +1,24 @@
+/* Nostromo Amber — amber CRT phosphor: warm phosphor film, fine scanlines,
+   edge halation and a soft vignette. Decorative only: paints the plugin's
+   #dsh-ft-overlay pseudo-elements, never app content, never pointer events.
+   Frozen in place — no animation, so reduced-motion is safe by construction. */
+body[data-dsh-futuristic-theme="nostromo-amber"][data-dsh-futuristic-effects="on"] #dsh-ft-overlay::before {
+  background-color: rgba(255, 176, 0, 0.08); /* ≈0.027 effective amber film, warms the black */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4) 0px,
+    rgba(0, 0, 0, 0.4) 1px,
+    rgba(0, 0, 0, 0) 1px,
+    rgba(0, 0, 0, 0) 3px
+  );
+  opacity: 0.23; /* effective scanline alpha ≈ 0.09 — CRT texture, not a readability tax */
+}
+
+body[data-dsh-futuristic-theme="nostromo-amber"][data-dsh-futuristic-effects="on"] #dsh-ft-overlay::after {
+  background:
+    radial-gradient(ellipse 118% 74% at 50% -13%, rgba(255, 176, 0, 0.095), rgba(255, 176, 0, 0.028) 42%, transparent 68%),
+    radial-gradient(ellipse 92% 82% at 50% 42%, rgba(255, 176, 0, 0.032), transparent 72%),
+    radial-gradient(ellipse 70% 45% at 50% 114%, rgba(255, 128, 0, 0.045), transparent 62%),
+    radial-gradient(ellipse 115% 100% at 50% 44%, transparent 55%, rgba(0, 0, 0, 0.4) 100%);
+  box-shadow: inset 0 0 130px rgba(255, 150, 0, 0.05); /* edge halation, warms the bezel */
+}

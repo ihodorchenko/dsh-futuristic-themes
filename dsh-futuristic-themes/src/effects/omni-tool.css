@@ -1,0 +1,29 @@
+/* Omni-tool — holographic projection. A faint cyan projection grid with
+   warm major rules fades in from the top, while orange and cyan corner
+   glows breathe a little light into the page edges. Decorative only:
+   paints the plugin overlay pseudo-elements, never app content, and uses
+   no animation (nothing to slow down or distract during long sessions). */
+
+body[data-dsh-futuristic-theme="omni-tool"][data-dsh-futuristic-effects="on"] #dsh-ft-overlay::before {
+  background-image:
+    linear-gradient(rgba(63, 208, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63, 208, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(rgba(255, 154, 31, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 154, 31, 0.045) 1px, transparent 1px);
+  background-size:
+    42px 42px,
+    42px 42px,
+    168px 168px,
+    168px 168px;
+  -webkit-mask-image: radial-gradient(ellipse 92% 64% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.55) 44%, transparent 82%);
+  mask-image: radial-gradient(ellipse 92% 64% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.55) 44%, transparent 82%);
+}
+
+body[data-dsh-futuristic-theme="omni-tool"][data-dsh-futuristic-effects="on"] #dsh-ft-overlay::after {
+  background:
+    radial-gradient(ellipse 52% 34% at 2% -5%, rgba(255, 154, 31, 0.09), transparent 62%),
+    radial-gradient(ellipse 50% 34% at 100% -7%, rgba(63, 208, 255, 0.08), transparent 66%),
+    radial-gradient(ellipse 60% 42% at 103% 106%, rgba(63, 208, 255, 0.06), transparent 64%),
+    linear-gradient(to top, rgba(255, 154, 31, 0.045), transparent 15%),
+    radial-gradient(ellipse 120% 106% at 50% 42%, transparent 58%, rgba(0, 0, 0, 0.3) 100%);
+}

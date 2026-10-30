@@ -1,0 +1,6 @@
+# dsh-futuristic-themes bundle layer.
+# Mounts the browser half that registers the three themes and their
+# Appearance row (Settings -> General -> Futuristic Themes).
+- insert:
+    - id: futuristic-themes
+      name: dsh-futuristic-themes

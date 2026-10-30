@@ -1,0 +1,151 @@
+/* Settings → General → Futuristic Themes appearance row. Colours come from
+   the active theme tokens, so the row itself follows the selected skin. */
+
+.dshft {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 0.5px solid var(--dsw-alias-border-l2);
+}
+
+.dshft-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dshft-title {
+  color: var(--dsw-alias-label-primary);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.dshft-desc {
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  max-width: 620px;
+}
+
+.dshft-cards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.dshft-card {
+  box-sizing: border-box;
+  flex: 1 1 148px;
+  min-width: 148px;
+  max-width: 230px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border: 0.5px solid var(--dsw-alias-border-l4);
+  border-radius: var(--dsw-radius-md);
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--ds-transition-duration-fast) var(--ds-ease-in-out),
+    background-color var(--ds-transition-duration-fast) var(--ds-ease-in-out);
+}
+
+.dshft-card:hover {
+  background: var(--dsw-alias-bg-layer-3);
+  border-color: var(--ft-accent, var(--dsw-alias-border-l4));
+}
+
+.dshft-card[data-active="true"] {
+  border-color: var(--ft-accent, var(--dsw-alias-brand-primary));
+  box-shadow: inset 0 0 0 1px var(--ft-accent, var(--dsw-alias-brand-primary));
+  background: var(--dsw-alias-bg-layer-3);
+}
+
+.dshft-card:focus-visible,
+.dshft-toggle input:focus-visible {
+  outline: var(--dsw-focus-ring-width, 2px) solid var(--dsw-focus-ring-color, var(--dsw-alias-brand-primary));
+  outline-offset: 2px;
+}
+
+.dshft-cardSwatches {
+  display: flex;
+  height: 16px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dshft-swatch {
+  flex: 1 1 0;
+}
+
+.dshft-cardName {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dshft-cardTag {
+  font-size: 11px;
+  line-height: 15px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.dshft-cardState {
+  min-height: 12px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ft-accent, var(--dsw-alias-brand-primary));
+}
+
+.dshft-card--default {
+  flex: 1 1 148px;
+}
+
+.dshft-card--default[data-active="true"] {
+  --ft-accent: var(--dsw-alias-brand-primary);
+}
+
+.dshft-cardSwatches--default {
+  opacity: 0.9;
+}
+
+.dshft-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.dshft-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.dshft-toggle input {
+  accent-color: var(--dsw-alias-brand-primary);
+  cursor: pointer;
+}
+
+.dshft-hint {
+  color: var(--dsw-alias-label-caption);
+  font-size: 11px;
+  line-height: 16px;
+}

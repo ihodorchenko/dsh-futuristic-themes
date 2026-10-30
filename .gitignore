@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# local-only: profile backups, test harnesses, build scratch
+backups/
+.build/
+.dsh-test/
+.dsh-qa/
+.pnpm-store/
+*.tgz
+
+# generated plugin artifacts (rebuilt with `node scripts/build.mjs`)
+dsh-futuristic-themes/build/
+
+# compiled screenshot harness (build from tools/webshot.swift)
+tools/webshot

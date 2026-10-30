@@ -1,0 +1,41 @@
+{
+  "id": "renaissance-steel",
+  "colorScheme": "dark",
+  "label": { "en": "Renaissance Steel", "zh": "复兴钢灰" },
+  "tagline": { "en": "ALIEN: ROMULUS — RENAISSANCE STATION", "zh": "异形：罗慕路斯 — 复兴空间站" },
+  "description": {
+    "en": "Cold industrial console: flat steel surfaces, 1 px blue-grey frames, clear statuses and almost no glow.",
+    "zh": "冷峻工业控制台：平坦钢灰表面、1px 蓝灰边框、清晰状态与几乎无辉光。"
+  },
+  "accent": "#5FB4E6",
+  "swatches": ["#07090C", "#5FB4E6", "#BCD0E0", "#8A99A6", "#5FD3B0"],
+  "roles": {
+    "bg": "#07090C",
+    "bgDeep": "#05070A",
+    "surface1": "#0E1318",
+    "surface2": "#121920",
+    "surface3": "#18222C",
+    "overlay": "#1C2733",
+    "border": "#26323D",
+    "dim": "#4F6A80",
+    "text": "#BCD0E0",
+    "secondary": "#8A99A6",
+    "primary": "#5FB4E6",
+    "bright": "#9AD7FF",
+    "warning": "#E2553F",
+    "ok": "#5FD3B0",
+    "info": "#6FA8C8",
+    "sidebarFill": "#0B1015",
+    "menuFill": "rgba(20, 28, 36, 0.94)"
+  },
+  "overrides": {
+    "--dsw-alias-label-caption": "#6F7C87",
+    "--dsw-alias-label-dimmed": "#465F73",
+    "--dsw-alias-label-quaternary": "#586C7A",
+    "--dsw-alias-state-idle-primary": "#627C91"
+  },
+  "preview": {
+    "notification": { "kind": "success", "text": "All systems nominal" },
+    "metrics": "bars"
+  }
+}

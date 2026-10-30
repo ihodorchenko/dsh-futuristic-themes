@@ -1,0 +1,6 @@
+[
+ {
+  "js": "localStorage.setItem('dsh-futuristic-themes:active','nostromo-amber'); location.reload();",
+  "wait": 0.75
+ }
+]

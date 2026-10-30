@@ -1,0 +1,10 @@
+[
+ {
+  "js": "document.querySelector('[aria-label=\"Account menu\"]').click()",
+  "wait": 0.9
+ },
+ {
+  "js": "Array.from(document.querySelectorAll('[role=menuitem]')).filter(function(e){return /Settings/.test(e.textContent||'')})[0].click()",
+  "wait": 1.5
+ }
+]

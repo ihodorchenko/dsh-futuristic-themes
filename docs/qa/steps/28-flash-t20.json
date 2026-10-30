@@ -1,0 +1,10 @@
+[
+ {
+  "js": "window.__dshErrList=[]; window.addEventListener('error',function(e){window.__dshErrList.push(String(e.message||e))}); window.addEventListener('unhandledrejection',function(e){window.__dshErrList.push('rejection:'+String(e.reason))}); 'listeners-installed'",
+  "wait": 0.1
+ },
+ {
+  "js": "localStorage.setItem('dsh-futuristic-themes:active','nostromo-amber'); location.reload();",
+  "wait": 2.0
+ }
+]

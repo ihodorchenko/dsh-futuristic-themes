@@ -1,0 +1,7 @@
+{
+  "id": "dsh-futuristic-themes",
+  "name": "Futuristic Themes",
+  "kind": "theme",
+  "entry": "./lib/client.js",
+  "themes": ["nostromo-amber", "omni-tool", "renaissance-steel"]
+}

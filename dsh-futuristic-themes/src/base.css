@@ -1,0 +1,40 @@
+/* Applied for every active dsh-futuristic theme, independently of the
+   decorative-effects switch. These are plain CSS overrides on top of the
+   host's own sheets: the mono stack only wins while the user has not chosen
+   a custom font in Settings (the host presenter writes an inline style in
+   that case, which outranks this rule). */
+
+body[data-dsh-futuristic-theme] {
+  --dsh-font-family-text: "IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SF Mono", Menlo, Consolas, monospace;
+  --dsh-font-family-code: "IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SF Mono", Menlo, Consolas, monospace;
+  --dsh-font-family-terminal: "IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* One fixed decorative layer per page; theme sheets paint its pseudo
+   elements. It never takes pointer events, so it cannot block the app. */
+#dsh-ft-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  pointer-events: none;
+  z-index: 2147483000;
+}
+
+body[data-dsh-futuristic-theme] #dsh-ft-overlay {
+  display: block;
+}
+
+#dsh-ft-overlay::before,
+#dsh-ft-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #dsh-ft-overlay::before,
+  #dsh-ft-overlay::after {
+    animation: none !important;
+  }
+}
