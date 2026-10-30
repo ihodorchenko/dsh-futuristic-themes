@@ -17,28 +17,35 @@ change identity with the OS colour scheme.
 
 ### DeepSeek Harness Desktop (recommended)
 
-The Desktop profile is owned by the Electron app, so `dsh plugin --profile desktop …` is
-refused by design. Use the app:
+The canonical source is the GitHub repository
+[`ihodorchenko/dsh-futuristic-themes`](https://github.com/ihodorchenko/dsh-futuristic-themes);
+this package is its `dsh-futuristic-themes/` folder. The Desktop profile is owned by the
+Electron app, so `dsh plugin --profile desktop …` is refused by design — use the repository
+script or the in-app plugin manager:
 
-1. **Settings → Plugins → add plugin** and enter either
-   - the path to this folder: `/Users/<you>/Project/Themes/dsh-futuristic-themes`, or
-   - a packed tarball (`pnpm pack` / `npm pack` in this folder, then pick the `.tgz`).
-2. Restart the app if the Plugins page asks for it. The plugin appears as
-   **dsh-futuristic-themes**.
+```sh
+git clone https://github.com/ihodorchenko/dsh-futuristic-themes.git
+cd dsh-futuristic-themes
+tools/install-desktop.sh              # install from GitHub into the Desktop profile
+tools/install-desktop.sh --update     # later: update to the latest GitHub commit
+```
 
-Manual install (the documented profile mechanism, if the UI is unavailable) is described in
+In-app alternative: **Settings → Plugins → add plugin** with the repository URL / package
+spec `github:ihodorchenko/dsh-futuristic-themes#path:/dsh-futuristic-themes`, or a packed
+tarball of this folder. Full manual procedure, updater and rollback are in
 [`docs/INSTALL.md`](../docs/INSTALL.md).
 
 ### `dsh web` / CLI profiles
 
 ```sh
+dsh plugin --profile <profile> add "github:ihodorchenko/dsh-futuristic-themes#path:/dsh-futuristic-themes"
+# or from a local checkout:
 dsh plugin --profile <profile> add /absolute/path/to/dsh-futuristic-themes
-# or from npm, once published:
-dsh plugin --profile web add dsh-futuristic-themes
 ```
 
 Restart `dsh web` afterwards. The plugin's own `cordis.patch.yml` is added to the profile's
-bundle stack automatically.
+bundle stack automatically. Git installs pin the exact commit; re-add the package or run
+`pnpm update dsh-futuristic-themes` in the profile to move to a newer one.
 
 ## Use
 

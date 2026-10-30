@@ -14,3 +14,5 @@ dsh-futuristic-themes/build/
 
 # compiled screenshot harness (build from tools/webshot.swift)
 tools/webshot
+.gh-test/
+.dsh-gh/

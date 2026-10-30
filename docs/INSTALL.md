@@ -1,28 +1,59 @@
-# Installing `dsh-futuristic-themes` into DeepSeek Harness Desktop
+# Installing `dsh-futuristic-themes` into DeepSeek Harness
+
+The canonical source is the plugin's GitHub repository:
+**https://github.com/ihodorchenko/dsh-futuristic-themes** — the package lives in the
+`dsh-futuristic-themes/` subdirectory, so pnpm installs it with a subdirectory spec
+(`#path:/dsh-futuristic-themes`). Each install pins an exact commit; updates re-resolve
+the HEAD of `main`.
+
+## Desktop (recommended: the helper script)
 
 The Desktop profile (`$DSH_HOME/profiles/desktop`) is owned by the Electron app, so the
 `dsh plugin` CLI refuses it on purpose (`profile "desktop" is managed exclusively by the
-Electron application`). Two supported ways exist: the in-app plugin manager, or the manual
-profile edit below (the same mechanism every community plugin uses).
+Electron application`). Use the repository script, which performs the documented manual
+profile edit, backs up the profile, installs from GitHub with the pnpm that ships with the
+app, and waits for the running app's HMR to mount the plugin:
 
-## Option A — in-app plugin manager (recommended)
+```sh
+git clone https://github.com/ihodorchenko/dsh-futuristic-themes.git
+cd dsh-futuristic-themes
+tools/install-desktop.sh              # install from GitHub
+tools/install-desktop.sh --update     # update to the latest GitHub commit
+tools/install-desktop.sh --uninstall  # remove
+```
+
+For plugin development, `tools/install-desktop.sh --local` symlinks the working copy instead
+(the old `link:` install); rebuild `lib/client.js` and reload the window after changes.
+
+Open **Settings → General → Futuristic themes**. If the row does not appear, reload the app
+window (⌘R) or restart the app once; the profile change is durable either way.
+
+### In-app plugin manager
 
 1. Open **Settings → Plugins**.
-2. Add a plugin and point it at either:
-   - the folder `/Users/<you>/Project/Themes/dsh-futuristic-themes`, or
-   - a tarball made with `pnpm pack` / `npm pack` inside that folder.
+2. Add a plugin with the repository URL or the package spec
+   `github:ihodorchenko/dsh-futuristic-themes#path:/dsh-futuristic-themes`
+   (a packed tarball of the `dsh-futuristic-themes/` folder also works).
 3. Confirm, wait for the install, and restart the app if the UI reports a pending restart.
-4. Open **Settings → General** — the **Futuristic themes** row is at the bottom.
 
-## Option B — manual profile edit
+## `dsh web` / CLI profiles
 
-Only the profile manifest and one install are needed; the plugin's own `cordis.patch.yml`
-bundle layer adds the loader entry, so no patch row has to be written by hand.
+```sh
+dsh plugin --profile web add "github:ihodorchenko/dsh-futuristic-themes#path:/dsh-futuristic-themes"
+# then restart the profile
+```
+
+Or, from a local checkout: `dsh plugin --profile web add /absolute/path/to/dsh-futuristic-themes`.
+
+## Manual profile edit (equivalent to the script)
+
+The plugin's own `cordis.patch.yml` bundle layer adds the loader entry, so no patch row has
+to be written by hand.
 
 ```sh
 # 1. back up the profile first (cheap insurance)
 cp ~/.dsh/profiles/desktop/package.json ~/.dsh/profiles/desktop/package.json.bak
-cp ~/.dsh/profiles/desktop/cordis.patch.yml ~/.dsh/profiles/desktop/cordis.patch.yml.bak
+cp ~/.dsh/profiles/desktop/pnpm-lock.yaml ~/.dsh/profiles/desktop/pnpm-lock.yaml.bak
 ```
 
 Edit `~/.dsh/profiles/desktop/package.json`:
@@ -31,7 +62,7 @@ Edit `~/.dsh/profiles/desktop/package.json`:
 {
   "dependencies": {
     // ... keep existing ones ...
-    "dsh-futuristic-themes": "link:/Users/<you>/Project/Themes/dsh-futuristic-themes"
+    "dsh-futuristic-themes": "github:ihodorchenko/dsh-futuristic-themes#path:/dsh-futuristic-themes"
   },
   "dsh": {
     "profile": {
@@ -44,44 +75,44 @@ Edit `~/.dsh/profiles/desktop/package.json`:
 }
 ```
 
-Then install the linked package into the profile with the pnpm that ships with the app:
+Then install with the pnpm that ships with the app:
 
 ```sh
 cd ~/.dsh/profiles/desktop
 NODE="$HOME/.dsh/dsh-runtimes/dsh-primary-runtime/dependencies/node/bin/node"
 PNPM="$HOME/.dsh/dsh-runtimes/dsh-primary-runtime/dependencies/pnpm/bin/pnpm.cjs"
 "$NODE" "$PNPM" install
+# update later:
+"$NODE" "$PNPM" update dsh-futuristic-themes
+```
+
+Verify the installed source and the live module graph from a shell:
+
+```sh
+grep -A2 "dsh-futuristic-themes" ~/.dsh/profiles/desktop/pnpm-lock.yaml | head -4
+# expected: version: https://codeload.github.com/ihodorchenko/dsh-futuristic-themes/tar.gz/<commit>#path:/dsh-futuristic-themes
+
+timeout 4 curl -sS -N http://127.0.0.1:50818/plugins/events \
+  | grep -o '"id":"dsh-futuristic-themes"' | head -1
+# expected: "id":"dsh-futuristic-themes"
 ```
 
 With HMR enabled (the `dsh-base` bundle ships it), the running app recomposes the profile
-within a second or two: the plugin appears in the client module graph and the renderer loads
-it live. If the row does not appear, reload the app window (⌘R) or restart the app once; the
-profile change is durable either way.
+within a second or two and the renderer loads the plugin live.
 
-Verify from a shell without touching the GUI:
+## Updating a GitHub install
 
-```sh
-# the live client module graph of the running app must list the plugin
-timeout 4 curl -sS -N http://127.0.0.1:50818/plugins/events \
-  | grep -o '"id":"dsh-futuristic-themes"' | head -1
-```
-
-Expected: `"id":"dsh-futuristic-themes"`.
+1. `tools/install-desktop.sh --update` (or `pnpm update dsh-futuristic-themes` in the profile).
+2. Reload the app window if the HMR revision does not change (identical content may keep the
+   cached bundle revision; an actual code change bumps it automatically).
 
 ## Rollback
 
-1. Restore the two backup files, or remove the dependency + bundle row by hand.
-2. Run the pnpm install above again so `node_modules` drops the link.
-3. Reload the app window / restart once. HMR removes the plugin and its styles.
+1. `tools/install-desktop.sh --uninstall`, or restore the profile backups by hand.
+2. Reload the app window / restart once; HMR removes the plugin and its styles.
+3. To go back to a specific older commit, set the dependency spec to
+   `github:ihodorchenko/dsh-futuristic-themes#<commit>#path:/dsh-futuristic-themes` and reinstall.
 
 If the app refuses to start after a bad edit, the Desktop boot guard offers **Disable
 third-party plugins**; it rewrites `cordis.patch.yml` to a safe state and lets you back in.
 Crash details live in `~/Library/Logs/DeepSeek Harness/crash-*-web-boot.log`.
-
-## Why the theme id is not written into `ui-theme.preference`
-
-The host settings schema accepts only `light`, `dark` and `system`. Writing a third-party
-theme id there makes `ThemeRuntime.buildSnapshot()` throw on the next boot
-(`theme registry lost "<id>"`) because the plugin that registers the id loads later than the
-preference. The plugin therefore keeps its selection in `localStorage` and re-applies it after
-the settings document arrives; see the main README.

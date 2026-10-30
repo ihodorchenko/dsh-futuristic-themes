@@ -94,9 +94,21 @@ interface to a monospace stack; the decorative layer can be disabled in one clic
 
 ## Install / use
 
-See [`docs/INSTALL.md`](docs/INSTALL.md). Short version for this machine: the plugin is already
-linked into `~/.dsh/profiles/desktop` and mounted live; open **Settings → General** and pick a
-theme. To remove it, run `tools/install-desktop.sh --uninstall` and reload the window.
+The canonical source is this GitHub repository — the installable package is the
+[`dsh-futuristic-themes/`](dsh-futuristic-themes/) folder, and the Desktop profile installs it
+straight from GitHub (pinned per commit):
+
+```sh
+git clone https://github.com/ihodorchenko/dsh-futuristic-themes.git
+cd dsh-futuristic-themes
+tools/install-desktop.sh              # install into the Desktop profile
+tools/install-desktop.sh --update     # update to the latest GitHub commit
+tools/install-desktop.sh --local      # development: link the working copy instead
+```
+
+Then open **Settings → General → Futuristic themes**. In-app plugin manager, `dsh web`
+installs, the manual profile edit and rollback are documented in
+[`docs/INSTALL.md`](docs/INSTALL.md).
 
 ## Develop
 
