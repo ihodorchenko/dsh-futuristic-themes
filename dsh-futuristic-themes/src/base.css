@@ -20,6 +20,17 @@ body[data-dsh-futuristic-theme] {
   z-index: 2147483000;
 }
 
+/* The Desktop shell marks every direct body child as
+   `-webkit-app-region: no-drag` (html[data-platform=darwin] body > :not(#root))
+   and `app-region` ignores `pointer-events`, so without this opt-out this
+   viewport-sized layer cancels every `[data-window-drag]` strip on macOS:
+   window dragging stops working and the native double-click-title zoom is
+   gone. `initial` is the neutral value (it computes to `none`, not
+   `no-drag`); the literal keyword `none` does not work here. */
+#dsh-ft-overlay {
+  -webkit-app-region: initial !important;
+}
+
 body[data-dsh-futuristic-theme] #dsh-ft-overlay {
   display: block;
 }
