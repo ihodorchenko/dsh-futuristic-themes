@@ -61,6 +61,8 @@ window.__ModuleLoader__.load({
 		var ctxRef = null;
 		/** Theme the user wants active (localStorage restored or clicked); survives the async settings adoption. */
 		var desired = null;
+		/** Last durable built-in preference seen; used to tell an adopt echo from a real choice. */
+		var lastDurable = null;
 		/** While the host settings read is still landing, a built-in preference must not undo the restored theme. */
 		var graceUntil = 0;
 		var mounted = false;
@@ -153,8 +155,10 @@ window.__ModuleLoader__.load({
 			if (reassertTimer !== null) return;
 			reassertTimer = setTimeout(function () {
 				reassertTimer = null;
-				if (desired === null || Date.now() > graceUntil) return;
+				if (desired === null) return;
 				try {
+					var current = ctxRef.theme.getTheme();
+					if (current !== null && current !== undefined && current.preference === desired) return;
 					ctxRef.theme.setTheme(desired);
 				} catch (error) {
 					desired = null;
@@ -167,9 +171,11 @@ window.__ModuleLoader__.load({
 			var preference = snapshot.preference;
 			recentEvents.push({ preference: preference, at: Date.now() });
 			if (recentEvents.length > 12) recentEvents.shift();
+			var durableChanged = isBuiltinPreference(preference) && lastDurable !== null && lastDurable !== preference;
 			if (isBuiltinPreference(preference)) {
 				state.lastBuiltin = preference;
 				writeStorage(STORAGE.lastBuiltin, preference);
+				lastDurable = preference;
 			}
 			if (isThemeId(preference)) {
 				desired = preference;
@@ -178,9 +184,10 @@ window.__ModuleLoader__.load({
 				refresh();
 				return;
 			}
-			// The host restored its durable built-in preference after we re-applied the
-			// saved theme (settings arrive asynchronously): re-assert once, briefly.
-			if (desired !== null && Date.now() < graceUntil) {
+			// Every settings-document update makes the host runtime adopt its durable
+			// built-in preference and republish it, even for unrelated settings. That echo
+			// must not end the theme: re-assert. Only a real durable change is a choice.
+			if (desired !== null && (Date.now() < graceUntil || !durableChanged)) {
 				scheduleReassert();
 				return;
 			}
@@ -454,7 +461,12 @@ window.__ModuleLoader__.load({
 			// preference lands late (the settings read is asynchronous).
 			desired = savedActive();
 			graceUntil = Date.now() + 5000;
-			onThemeChange(ctx.theme.getTheme());
+			lastDurable = state.lastBuiltin;
+			var bootSnapshot = ctx.theme.getTheme();
+			if (bootSnapshot && isBuiltinPreference(bootSnapshot.preference)) {
+				lastDurable = bootSnapshot.preference;
+			}
+			onThemeChange(bootSnapshot);
 			if (desired !== null) {
 				try {
 					ctx.theme.setTheme(desired);
@@ -522,6 +534,7 @@ window.__ModuleLoader__.load({
 			return {
 				state: getState(),
 				desired: desired,
+				lastDurable: lastDurable,
 				mounted: mounted,
 				graceUntil: graceUntil,
 				now: Date.now(),
