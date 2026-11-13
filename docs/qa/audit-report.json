@@ -9,7 +9,7 @@
     "E. Built bundle truth",
     "Z. Harness"
   ],
-  "generatedAt": "2026-11-13T12:42:21.838Z",
+  "generatedAt": "2026-11-13T13:08:45.329Z",
   "node": "v24.21.0",
   "pluginRoot": "/Users/igorhodorchenko/Project/dsh-futuristic-themes/dsh-futuristic-themes",
   "options": {
@@ -127,7 +127,7 @@
       "id": "A16",
       "title": "lib/client.js exists and is not empty",
       "status": "PASS",
-      "detail": "61.0 KiB"
+      "detail": "73.2 KiB"
     },
     {
       "section": "A. Package shape",
@@ -1373,7 +1373,7 @@
       "id": "E13",
       "title": "inlined ROW_CSS matches src/base.css + src/row.css (fresh build)",
       "status": "PASS",
-      "detail": "5928 chars in sync"
+      "detail": "7016 chars in sync"
     },
     {
       "section": "E. Built bundle truth",

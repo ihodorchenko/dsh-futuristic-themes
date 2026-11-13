@@ -211,3 +211,25 @@ Node lives outside PATH in this environment; always call it with the absolute pa
 - Copy (`en`, `zh`) is correct, short and specific; `tagline` is the concept strap line.
 - You report back: roles chosen (and why they diverge from the brief), overrides added,
   remaining warnings, and the preview screenshot path.
+
+## 8. Composite mode (plugin-level)
+
+`Composite` is a mode in the Appearance row, not a theme definition. The four registered token
+sets remain the only palettes; the mode maps the host Light / Dark / System scheme onto one of
+them per scheme.
+
+- State: `localStorage['dsh-futuristic-themes:composite'] = { enabled, light, dark }`, where
+  `light`/`dark` are theme ids or `null` (built-in).
+- The host's built-in **Light / Dark / System** choice is the scheme input. With Composite
+  enabled it must not be treated as "exit the theme"; `theme/change` maps the scheme to the
+  configured id and re-asserts the theme. `System` follows the resolved scheme and the OS
+  `prefers-color-scheme` changes.
+- An empty slot applies the built-in appearance for that scheme. If both slots are empty the
+  mode turns itself off and Standard appearance takes over.
+- Selecting a normal theme card or Standard appearance disables Composite but keeps the saved
+  mappings; a later enable reuses them.
+- The host's built-in cubes do not stay highlighted while a mapped theme is active (the host
+  reports the theme id); the Composite card and its two selectors are the indicator.
+- Theme authors do not touch this layer: it lives in `src/client.template.js` and `src/row.css`
+  and changes no theme JSON, token derivation or effects sheet. The test matrix is in
+  [`docs/qa/composite-verification.md`](qa/composite-verification.md).

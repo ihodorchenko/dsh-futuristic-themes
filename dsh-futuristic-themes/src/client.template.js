@@ -5,7 +5,9 @@
  * registry (`ctx.theme`), restores the last selection across restarts from
  * localStorage, keeps the decorative effect layer in sync, and contributes an
  * Appearance row to Settings → General so the themes are switchable without a
- * page of their own.
+ * page of their own. The row also offers a Composite mode: the host's
+ * Light / Dark / System preference selects which registered theme to apply for
+ * each scheme (or the built-in appearance when a slot is empty).
  *
  * The selection is intentionally NOT written to `ui-theme.preference`: the host
  * settings schema only accepts light/dark/system, and a third-party theme id
@@ -44,7 +46,11 @@ window.__ModuleLoader__.load({
 			active: PLUGIN_ID + ":active",
 			effects: PLUGIN_ID + ":effects",
 			lastBuiltin: PLUGIN_ID + ":last-builtin",
+			composite: PLUGIN_ID + ":composite",
 		};
+
+		/** Swatch strip for the Composite card (light + dark city palettes). */
+		var COMPOSITE_SWATCHES = ["#EFF1F4", "#E10600", "#E5E9ED", "#0B0804", "#FFB000", "#5FB4E6"];
 
 		var THEME_IDS = THEMES.map(function (theme) {
 			return theme.id;
@@ -52,7 +58,12 @@ window.__ModuleLoader__.load({
 
 		/* ----------------------------------------------------------------- state */
 
-		var state = { active: null, effects: true, lastBuiltin: "dark" };
+		var state = {
+			active: null,
+			effects: true,
+			lastBuiltin: "dark",
+			composite: { enabled: false, light: null, dark: null },
+		};
 		var listeners = new Set();
 		var ctxRef = null;
 		/** Theme the user wants active (localStorage restored or clicked); survives the async settings adoption. */
@@ -64,6 +75,8 @@ window.__ModuleLoader__.load({
 		var mounted = false;
 		/** Pending deferred re-assert of the saved theme (see scheduleReassert). */
 		var reassertTimer = null;
+		/** Host scheme (light/dark) last resolved for the Composite mode. */
+		var lastScheme = null;
 		/** Last theme/change events, for the read-only debug surface. */
 		var recentEvents = [];
 
@@ -97,8 +110,67 @@ window.__ModuleLoader__.load({
 			return isThemeId(value) ? value : null;
 		}
 
+		/* ------------------------------------------------------- composite mode */
+
+		function readComposite() {
+			var raw = readStorage(STORAGE.composite);
+			if (raw === null) return null;
+			try {
+				var parsed = JSON.parse(raw);
+				if (parsed === null || typeof parsed !== "object") return null;
+				return {
+					enabled: parsed.enabled === true,
+					light: isThemeId(parsed.light) ? parsed.light : null,
+					dark: isThemeId(parsed.dark) ? parsed.dark : null,
+				};
+			} catch (error) {
+				return null;
+			}
+		}
+
+		function writeComposite() {
+			writeStorage(STORAGE.composite, JSON.stringify(state.composite));
+		}
+
+		function bothCompositeSlotsEmpty() {
+			return state.composite.light === null && state.composite.dark === null;
+		}
+
+		/** The host scheme currently in force (light/dark), independent of the applied theme. */
+		function currentHostScheme() {
+			if (state.lastBuiltin === "light") return "light";
+			if (state.lastBuiltin === "dark") return "dark";
+			try {
+				if (typeof window !== "undefined" && typeof window.matchMedia === "function") {
+					return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+				}
+			} catch (error) {
+				/* fall through */
+			}
+			return "light";
+		}
+
+		/** Resolve the host scheme from a theme snapshot (used at boot and on changes). */
+		function snapshotScheme(snapshot) {
+			var preference = snapshot && snapshot.preference;
+			if (preference === "light" || preference === "dark") return preference;
+			if (preference === "system" && snapshot.active && (snapshot.active.colorScheme === "light" || snapshot.active.colorScheme === "dark")) {
+				return snapshot.active.colorScheme;
+			}
+			return currentHostScheme();
+		}
+
 		function getState() {
-			return { active: state.active, effects: state.effects, lastBuiltin: state.lastBuiltin };
+			return {
+				active: state.active,
+				effects: state.effects,
+				lastBuiltin: state.lastBuiltin,
+				composite: {
+					enabled: state.composite.enabled,
+					light: state.composite.light,
+					dark: state.composite.dark,
+				},
+			};
 		}
 
 		function notify() {
@@ -162,13 +234,41 @@ window.__ModuleLoader__.load({
 			}, 30);
 		}
 
+		/**
+		* Apply the Composite mapping for a resolved host scheme. A mapped theme
+		* goes through the deferred re-assert; an empty slot returns to the host's
+		* built-in appearance for that scheme.
+		*/
+		function applyCompositeForScheme(scheme) {
+			if (ctxRef === null) return;
+			var mapped = state.composite.enabled ? state.composite[scheme] : null;
+			if (isThemeId(mapped)) {
+				desired = mapped;
+				state.active = mapped;
+				writeStorage(STORAGE.active, mapped);
+				refresh();
+				scheduleReassert();
+				return;
+			}
+			desired = null;
+			state.active = null;
+			writeStorage(STORAGE.active, null);
+			refresh();
+			try {
+				ctxRef.theme.setTheme(state.lastBuiltin || scheme);
+			} catch (error) {
+				console.warn("[" + PLUGIN_ID + "] cannot return to the built-in appearance", error);
+			}
+		}
+
 		function onThemeChange(snapshot) {
 			if (snapshot === undefined || snapshot === null) return;
 			var preference = snapshot.preference;
 			recentEvents.push({ preference: preference, at: Date.now() });
 			if (recentEvents.length > 12) recentEvents.shift();
-			var durableChanged = isBuiltinPreference(preference) && lastDurable !== null && lastDurable !== preference;
-			if (isBuiltinPreference(preference)) {
+			var builtin = isBuiltinPreference(preference);
+			var durableChanged = builtin && lastDurable !== null && lastDurable !== preference;
+			if (builtin) {
 				state.lastBuiltin = preference;
 				writeStorage(STORAGE.lastBuiltin, preference);
 				lastDurable = preference;
@@ -177,6 +277,29 @@ window.__ModuleLoader__.load({
 				desired = preference;
 				state.active = preference;
 				writeStorage(STORAGE.active, preference);
+				refresh();
+				return;
+			}
+			// Composite mode owns the built-in preference: it is the scheme selector,
+			// not an exit from the theme. Map it to the configured theme (or built-in)
+			// and re-assert after the host presenter's outer snapshot lands.
+			if (state.composite.enabled && builtin) {
+				var scheme = snapshotScheme(snapshot);
+				lastScheme = scheme;
+				var mapped = state.composite[scheme];
+				if (isThemeId(mapped)) {
+					desired = mapped;
+					state.active = mapped;
+					writeStorage(STORAGE.active, mapped);
+					refresh();
+					scheduleReassert();
+					return;
+				}
+				if (state.active !== null || desired !== null) {
+					state.active = null;
+					desired = null;
+					writeStorage(STORAGE.active, null);
+				}
 				refresh();
 				return;
 			}
@@ -226,17 +349,27 @@ window.__ModuleLoader__.load({
 
 		function selectTheme(id) {
 			if (!isThemeId(id) || ctxRef === null) return;
+			// A manual theme choice is an explicit override: leave Composite mode.
+			state.composite.enabled = false;
+			writeComposite();
 			desired = id;
+			state.active = id;
+			writeStorage(STORAGE.active, id);
+			refresh();
 			try {
 				ctxRef.theme.setTheme(id);
 			} catch (error) {
 				console.warn("[" + PLUGIN_ID + "] cannot activate theme " + id, error);
 				desired = null;
+				state.active = null;
+				refresh();
 			}
 		}
 
 		function selectDefault() {
 			if (ctxRef === null) return;
+			state.composite.enabled = false;
+			writeComposite();
 			desired = null;
 			state.active = null;
 			writeStorage(STORAGE.active, null);
@@ -245,6 +378,66 @@ window.__ModuleLoader__.load({
 				ctxRef.theme.setTheme(state.lastBuiltin || "dark");
 			} catch (error) {
 				console.warn("[" + PLUGIN_ID + "] cannot restore the built-in appearance", error);
+			}
+		}
+
+		/**
+		* Enable Composite mode. On the first enable, seed the slots from the
+		* currently active manual theme (its own scheme) and the friendly defaults;
+		* otherwise keep the saved mapping.
+		*/
+		function selectComposite() {
+			if (ctxRef === null || state.composite.enabled) return;
+			if (bothCompositeSlotsEmpty()) {
+				var light = "pure-reflection";
+				var dark = "nostromo-amber";
+				if (isThemeId(state.active)) {
+					for (var index = 0; index < THEMES.length; index++) {
+						if (THEMES[index].id !== state.active) continue;
+						if (THEMES[index].colorScheme === "light") light = state.active;
+						else if (THEMES[index].colorScheme === "dark") dark = state.active;
+						break;
+					}
+				}
+				state.composite.light = light;
+				state.composite.dark = dark;
+			}
+			if (bothCompositeSlotsEmpty()) return;
+			state.composite.enabled = true;
+			writeComposite();
+			lastScheme = currentHostScheme();
+			applyCompositeForScheme(lastScheme);
+		}
+
+		/**
+		* Change one scheme slot. A null value means "use the built-in appearance
+		* for this scheme". If both slots become empty, Composite turns itself off
+		* and the host built-in appearance is restored (the agreed behaviour).
+		*/
+		function setCompositeMapping(scheme, value) {
+			if (scheme !== "light" && scheme !== "dark") return;
+			state.composite[scheme] = isThemeId(value) ? value : null;
+			if (bothCompositeSlotsEmpty()) {
+				state.composite.enabled = false;
+				writeComposite();
+				desired = null;
+				state.active = null;
+				writeStorage(STORAGE.active, null);
+				refresh();
+				try {
+					if (ctxRef !== null) ctxRef.theme.setTheme(state.lastBuiltin || "system");
+				} catch (error) {
+					console.warn("[" + PLUGIN_ID + "] cannot return to the built-in appearance", error);
+				}
+				return;
+			}
+			writeComposite();
+			if (state.composite.enabled) {
+				var schemeNow = currentHostScheme();
+				if (scheme === schemeNow) applyCompositeForScheme(schemeNow);
+				else refresh();
+			} else {
+				refresh();
 			}
 		}
 
@@ -286,9 +479,11 @@ window.__ModuleLoader__.load({
 				});
 			}, []);
 			var active = snapshot.active;
+			var composite = snapshot.composite || { enabled: false, light: null, dark: null };
+			var compositeSelected = composite.enabled === true;
 
 			var cards = THEMES.map(function (theme) {
-				var selected = active === theme.id;
+				var selected = !compositeSelected && active === theme.id;
 				return React.createElement(
 					"button",
 					{
@@ -324,13 +519,46 @@ window.__ModuleLoader__.load({
 				);
 			});
 
+			var compositeButton = React.createElement(
+				"button",
+				{
+					type: "button",
+					className: "dshft-card dshft-card--composite",
+					"data-active": compositeSelected ? "true" : "false",
+					"aria-pressed": compositeSelected ? "true" : "false",
+					title: t("composite.description"),
+					style: { "--ft-accent": "#E10600" },
+					onClick: function () {
+						if (props.selectCompositeAppearance) props.selectCompositeAppearance();
+					},
+				},
+				React.createElement(
+					"span",
+					{ className: "dshft-cardSwatches", "aria-hidden": "true" },
+					COMPOSITE_SWATCHES.map(function (colour, index) {
+						return React.createElement("span", {
+							key: index,
+							className: "dshft-swatch",
+							style: { backgroundColor: colour },
+						});
+					}),
+				),
+				React.createElement("span", { className: "dshft-cardName" }, t("composite.label")),
+				React.createElement("span", { className: "dshft-cardTag" }, t("composite.tagline")),
+				React.createElement(
+					"span",
+					{ className: "dshft-cardState", "aria-hidden": "true" },
+					compositeSelected ? t("state.active") : "",
+				),
+			);
+
 			var defaultButton = React.createElement(
 				"button",
 				{
 					type: "button",
 					className: "dshft-card dshft-card--default",
-					"data-active": active === null ? "true" : "false",
-					"aria-pressed": active === null ? "true" : "false",
+					"data-active": !compositeSelected && active === null ? "true" : "false",
+					"aria-pressed": !compositeSelected && active === null ? "true" : "false",
 					title: t("default.description"),
 					onClick: function () {
 						if (props.selectDefaultAppearance) props.selectDefaultAppearance();
@@ -349,9 +577,50 @@ window.__ModuleLoader__.load({
 				React.createElement(
 					"span",
 					{ className: "dshft-cardState", "aria-hidden": "true" },
-					active === null ? t("state.active") : "",
+					!compositeSelected && active === null ? t("state.active") : "",
 				),
 			);
+
+			var compositeControls = null;
+			if (compositeSelected) {
+				var makeOptions = function () {
+					return [React.createElement("option", { key: "builtin", value: "" }, t("composite.builtin"))].concat(
+						THEMES.map(function (theme) {
+							return React.createElement(
+								"option",
+								{ key: theme.id, value: theme.id },
+								t("theme." + theme.id + ".label") + " · " + (theme.colorScheme === "light" ? t("composite.schemeLight") : t("composite.schemeDark")),
+							);
+						}),
+					);
+				};
+				var makeField = function (scheme, label) {
+					return React.createElement(
+						"label",
+						{ className: "dshft-field" },
+						React.createElement("span", { className: "dshft-fieldLabel" }, label),
+						React.createElement(
+							"select",
+							{
+								className: "dshft-select",
+								"aria-label": label,
+								value: composite[scheme] || "",
+								onChange: function (event) {
+									if (props.setCompositeMapping) props.setCompositeMapping(scheme, event.target.value || null);
+								},
+							},
+							makeOptions(),
+						),
+					);
+				};
+				compositeControls = React.createElement(
+					"div",
+					{ className: "dshft-composite" },
+					makeField("light", t("composite.light")),
+					makeField("dark", t("composite.dark")),
+					React.createElement("span", { className: "dshft-compositeHint" }, t("composite.hint")),
+				);
+			}
 
 			var effects = React.createElement(
 				"label",
@@ -375,7 +644,8 @@ window.__ModuleLoader__.load({
 					React.createElement("div", { className: "dshft-title" }, t("title")),
 					React.createElement("div", { className: "dshft-desc" }, t("description")),
 				),
-				React.createElement("div", { className: "dshft-cards", role: "group", "aria-label": t("title") }, cards, defaultButton),
+				React.createElement("div", { className: "dshft-cards", role: "group", "aria-label": t("title") }, cards, compositeButton, defaultButton),
+				compositeControls,
 				React.createElement(
 					"div",
 					{ className: "dshft-foot" },
@@ -446,6 +716,24 @@ window.__ModuleLoader__.load({
 			}, PLUGIN_ID + ": theme change listener");
 
 			ctx.effect(function () {
+				if (typeof window === "undefined" || typeof window.matchMedia !== "function") return function () {};
+				var query = window.matchMedia("(prefers-color-scheme: dark)");
+				var listener = function () {
+					if (!state.composite.enabled || state.lastBuiltin !== "system") return;
+					var scheme = query.matches ? "dark" : "light";
+					if (scheme === lastScheme) return;
+					lastScheme = scheme;
+					applyCompositeForScheme(scheme);
+				};
+				if (typeof query.addEventListener === "function") query.addEventListener("change", listener);
+				else if (typeof query.addListener === "function") query.addListener(listener);
+				return function () {
+					if (typeof query.removeEventListener === "function") query.removeEventListener("change", listener);
+					else if (typeof query.removeListener === "function") query.removeListener(listener);
+				};
+			}, PLUGIN_ID + ": system scheme changes");
+
+			ctx.effect(function () {
 				if (typeof document === "undefined") return function () {};
 				document.addEventListener("click", onDocumentClick, true);
 				return function () {
@@ -454,8 +742,15 @@ window.__ModuleLoader__.load({
 			}, PLUGIN_ID + ": settings-interaction grace cancel");
 
 			// Restore the last selection and re-apply it if the durable built-in
-			// preference lands late (the settings read is asynchronous).
-			desired = savedActive();
+			// preference lands late (the settings read is asynchronous). With
+			// Composite enabled the host scheme picks the theme; a saved manual
+			// selection is intentionally ignored.
+			state.composite = readComposite() || state.composite;
+			if (state.composite.enabled && bothCompositeSlotsEmpty()) {
+				state.composite.enabled = false;
+				writeComposite();
+			}
+			desired = state.composite.enabled ? null : savedActive();
 			graceUntil = Date.now() + 5000;
 			lastDurable = state.lastBuiltin;
 			var bootSnapshot = ctx.theme.getTheme();
@@ -463,7 +758,11 @@ window.__ModuleLoader__.load({
 				lastDurable = bootSnapshot.preference;
 			}
 			onThemeChange(bootSnapshot);
-			if (desired !== null) {
+			if (state.composite.enabled) {
+				var bootScheme = snapshotScheme(bootSnapshot);
+				lastScheme = bootScheme;
+				applyCompositeForScheme(bootScheme);
+			} else if (desired !== null) {
 				try {
 					ctx.theme.setTheme(desired);
 				} catch (error) {
@@ -506,6 +805,8 @@ window.__ModuleLoader__.load({
 									subscribeFuturisticTheme: subscribe,
 									selectFuturisticTheme: selectTheme,
 									selectDefaultAppearance: selectDefault,
+									selectCompositeAppearance: selectComposite,
+									setCompositeMapping: setCompositeMapping,
 									setFuturisticEffects: setEffects,
 								};
 							},
@@ -531,6 +832,7 @@ window.__ModuleLoader__.load({
 				state: getState(),
 				desired: desired,
 				lastDurable: lastDurable,
+				lastScheme: lastScheme,
 				mounted: mounted,
 				graceUntil: graceUntil,
 				now: Date.now(),

@@ -1,6 +1,8 @@
 # dsh-futuristic-themes
 
-Four cinematic themes for **DeepSeek Harness** (Desktop and `dsh web`), as one plugin:
+Four cinematic themes for **DeepSeek Harness** (Desktop and `dsh web`), as one plugin, plus a
+**Composite** mode that pairs a light and a dark theme with the host Light / Dark / System
+appearance:
 
 | Theme | Scheme | Mood | Accent |
 | --- | --- | --- | --- |
@@ -10,9 +12,9 @@ Four cinematic themes for **DeepSeek Harness** (Desktop and `dsh web`), as one p
 | **Renaissance Steel** | dark | cold industrial station console — flat steel surfaces, 1 px frames, almost no glow | `#5FB4E6` |
 
 All four replace the complete `--dsw-*` semantic palette and paint an optional decorative
-layer (scanlines / grid / steel bezel / daylight and red corner marks) that can be switched
-off in one click (scanlines / grid / steel bezel / daylight, red brackets and a district
-signature). The three dark themes switch the whole interface to a monospace stack; Pure
+layer (scanlines / grid / steel bezel / daylight, red brackets and a district signature) that
+can be switched off in one click. The three dark themes switch the whole interface to a
+monospace stack; Pure
 Reflection uses Inter for interface copy, keeps IBM Plex Mono for logs, code and technical
 data, and sharpens the host radius scale to 0–4 px. The three dark themes are dark-only by
 design — a cinematic terminal should not change identity with the OS colour scheme; Pure
@@ -55,15 +57,24 @@ bundle stack automatically. Git installs pin the exact commit; re-add the packag
 ## Use
 
 1. Open **Settings → General**.
-2. Under **Futuristic themes**, click one of the four cards.
+2. Under **Futuristic themes**, click one of the four theme cards, or **Composite** to pair a
+   light and a dark theme.
 3. The whole application repaints immediately; the choice survives restarts.
-4. **Decorative effects** switches the atmospheric layer (scanlines / holographic grid /
+4. **Composite** (when enabled) shows **Light scheme** and **Dark scheme** selectors. Each can
+   be one of the four themes or **Built-in**. The host **Settings → Appearance** choice then
+   picks the slot: Light, Dark or the resolved System scheme. An empty slot uses the built-in
+   appearance; if both slots are empty, Composite turns itself off.
+5. A normal theme card (or **Standard appearance**) leaves Composite and applies that choice
+   manually; the mappings stay saved for the next enable.
+6. **Decorative effects** switches the atmospheric layer (scanlines / holographic grid /
    steel bezel / daylight, red brackets and the district signature) on and off. The palette
    stays either way.
-5. **Standard appearance** returns to the built-in light/dark appearance you used before.
+7. **Standard appearance** returns to the built-in light/dark appearance you used before.
 
-The host's own **Appearance** row keeps working: choosing Light, Dark or System there exits
-the theme deliberately — the plugin steps aside and does not resurrect itself on reload.
+The host's own **Appearance** row keeps working. With Composite off, choosing Light, Dark or
+System there exits the manual theme deliberately — the plugin steps aside and does not
+resurrect itself on reload. With Composite on, the same choice is the scheme input and maps to
+the configured theme (or the built-in appearance for an empty slot).
 
 ### How selection is stored
 
@@ -74,6 +85,12 @@ the host settings have loaded, before the app shell mounts. The durable preferen
 built-in value the user last chose, so the host's boot splash follows that scheme; the theme
 lands a moment later and the shell paints already themed.
 
+Composite stores its state next to it (`dsh-futuristic-themes:composite`:
+`{ enabled, light, dark }`). The host preference stays `light|dark|system`, so the first paint
+already has the right brightness; on boot the plugin reads the scheme and applies the mapped
+theme before the shell. A normal theme card or Standard appearance disables Composite but keeps
+the saved mappings; emptying both slots also disables it automatically.
+
 ## What the themes change
 
 The plugin registers four definitions through the official third-party extension point
@@ -81,6 +98,13 @@ The plugin registers four definitions through the official third-party extension
 theme is a complete override of the semantic token layer — backgrounds, surfaces, borders,
 text grades, states, buttons, menus, code blocks, diffs, scrollbars, sidebar, markdown and
 settings cards — so no component is left in the default blue-grey palette.
+
+The **Composite** card is plugin logic on top of those four definitions, not a fifth token set:
+it maps the host Light / Dark / System scheme onto one of the registered theme ids, or onto the
+built-in appearance when a slot is empty. It uses the same `ctx.theme.setTheme()` path, reacts
+to `theme/change` and to the OS `prefers-color-scheme`, and never writes a theme id into the
+host preference. The full test matrix is in
+[`docs/qa/composite-verification.md`](../docs/qa/composite-verification.md).
 
 No Host-side services, routes, tools or settings namespaces are registered. The browser half
 only imports `react` and the host services it declares (`theme`, `slots`, `locale`).
@@ -133,7 +157,8 @@ $NODE scripts/preview.mjs          # build/preview.html + build/theme-<id>.html
 ## Compatibility
 
 Tested against DeepSeek Harness Desktop **0.2.1-rc.5** and the matching `dsh web`; the light
-theme was additionally smoke-tested live on Desktop **0.2.2-rc.2** and **0.2.2-rc.3**. Requires the host
+theme and the Composite mode were additionally smoke-tested live on Desktop **0.2.2-rc.2**
+and **0.2.2-rc.3**. Requires the host
 theme extension point (`@deepseek-ai/dsh-client-ui-theme`) and the `settings.general.item`
 slot; both are shipped in 0.2.x. On a host that lacks them the plugin still loads and
 registers its themes, but the settings row is skipped with a console warning.

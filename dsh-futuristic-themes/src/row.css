@@ -149,3 +149,53 @@
   font-size: 11px;
   line-height: 16px;
 }
+
+/* Composite mode: two scheme selectors below the cards. */
+.dshft-composite {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding-top: 12px;
+  border-top: 0.5px solid var(--dsw-alias-border-l2);
+}
+
+.dshft-field {
+  display: flex;
+  flex: 1 1 200px;
+  min-width: 180px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dshft-fieldLabel {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11px;
+  line-height: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dshft-select {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 6px 8px;
+  border: 0.5px solid var(--dsw-alias-border-l3);
+  border-radius: var(--dsw-radius-sm);
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+  font: inherit;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.dshft-select:focus-visible {
+  outline: var(--dsw-focus-ring-width, 2px) solid var(--dsw-focus-ring-color, var(--dsw-alias-brand-primary));
+  outline-offset: 2px;
+}
+
+.dshft-compositeHint {
+  flex-basis: 100%;
+  color: var(--dsw-alias-label-caption);
+  font-size: 11px;
+  line-height: 16px;
+}
