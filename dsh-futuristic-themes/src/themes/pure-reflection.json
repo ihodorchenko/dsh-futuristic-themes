@@ -1,0 +1,51 @@
+{
+  "id": "pure-reflection",
+  "colorScheme": "light",
+  "label": { "en": "Pure Reflection", "zh": "纯净反射" },
+  "tagline": { "en": "MIRROR'S EDGE INSPIRED", "zh": "《镜之边缘》启发" },
+  "description": {
+    "en": "Sterile white architecture, cold grey surfaces and one deliberate red accent — a light, geometric working environment.",
+    "zh": "纯净白色建筑、冷灰表面与克制的一点红色强调——明亮而几何化的工作环境。"
+  },
+  "accent": "#E53935",
+  "swatches": ["#F4F5F2", "#E53935", "#202426", "#FFFFFF", "#89918F"],
+  "roles": {
+    "bg": "#F4F5F2",
+    "bgDeep": "#E9EBE8",
+    "surface1": "#FFFFFF",
+    "surface2": "#F7F8F5",
+    "surface3": "#E9EBE8",
+    "overlay": "#E9EBE8",
+    "border": "#D3D7D3",
+    "dim": "#89918F",
+    "text": "#202426",
+    "secondary": "#687174",
+    "primary": "#E53935",
+    "bright": "#FF514A",
+    "warning": "#D25C28",
+    "ok": "#568C72",
+    "info": "#3F6F8F",
+    "sidebarFill": "#EEF0ED",
+    "menuFill": "rgba(255, 255, 255, 0.97)"
+  },
+  "overrides": {
+    "--dsw-alias-label-primary-foreground": "#FFFFFF",
+    "--dsw-alias-switch-thumb": "#FFFFFF",
+    "--dsw-alias-tooltip-bg": "#202426",
+    "--dsw-alias-tooltip-key-bg": "#33383A",
+    "--dsw-alias-tooltip-label": "#FFFFFF",
+    "--dsw-alias-toast-bg": "#202426",
+    "--dsw-alias-toast-label": "#FFFFFF",
+    "--dsw-alias-toast-action": "#FF514A",
+    "--dsw-alias-state-error-primary": "#C62828",
+    "--dsw-alias-state-error-secondary": "#E53935",
+    "--dsw-alias-button-primary-hover": "#D32F2F",
+    "--dsw-alias-button-info-hover": "#D32F2F",
+    "--dsw-alias-label-caption": "#7E8789",
+    "--dsw-alias-bg-mask-1": "rgba(32, 36, 38, 0.26)"
+  },
+  "preview": {
+    "notification": { "kind": "success", "text": "All systems nominal" },
+    "metrics": "bars"
+  }
+}

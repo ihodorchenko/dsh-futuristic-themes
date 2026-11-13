@@ -3,5 +3,10 @@
   "name": "Futuristic Themes",
   "kind": "theme",
   "entry": "./lib/client.js",
-  "themes": ["nostromo-amber", "omni-tool", "renaissance-steel"]
+  "themes": [
+    "nostromo-amber",
+    "omni-tool",
+    "pure-reflection",
+    "renaissance-steel"
+  ]
 }

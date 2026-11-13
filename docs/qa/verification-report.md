@@ -1,5 +1,8 @@
 # End-to-end verification — dsh-futuristic-themes
 
+> Historical report for the three dark themes (v0.1.3, 2026-10-30). The fourth theme,
+> Pure Reflection, is covered by [`pure-reflection-verification.md`](pure-reflection-verification.md).
+
 **Task:** `task-5` · **Verifier:** `theme-verifier` (independent of the designers)
 **Date:** 2026-10-30, Europe/Minsk (evening) · **Harness:** WKWebView step driver + independent audit
 **Plugin under test:** `dsh-futuristic-themes` @ final palettes, `lib/client.js` rebuilt 20:22 (51 243 B); D1/D2 fixes re-verified — see §7

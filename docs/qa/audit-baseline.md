@@ -1,5 +1,8 @@
 # Audit baseline — dsh-futuristic-themes
 
+> Historical snapshot of the original three-theme harness (v0.1.x). The current audit covers
+> four themes and 197 checks — see [`audit-report.json`](audit-report.json).
+
 **Task:** `task-4` · independent theme audit harness
 **Owner:** `theme-verifier` (verification is deliberately separate from the designers and from
 the plugin build).

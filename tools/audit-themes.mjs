@@ -49,7 +49,15 @@ const DEFAULT_REPORT = join(WORKSPACE, "docs", "qa", "audit-report.json");
 const VERSION = "1.0.0";
 
 /** Themes `docs/THEME-CONTRACT.md` promises. */
-const CONTRACT_THEME_IDS = Object.freeze(["nostromo-amber", "omni-tool", "renaissance-steel"]);
+const CONTRACT_THEME_IDS = Object.freeze(["nostromo-amber", "omni-tool", "pure-reflection", "renaissance-steel"]);
+
+/** Colour scheme each contract theme must register with the host. */
+const THEME_SCHEMES = Object.freeze({
+  "nostromo-amber": "dark",
+  "omni-tool": "dark",
+  "pure-reflection": "light",
+  "renaissance-steel": "dark",
+});
 
 /** Ids reserved by the host theme registry. */
 const RESERVED_IDS = Object.freeze(["system", "light", "dark", "auto"]);
@@ -96,6 +104,7 @@ const DOCUMENTED_ROLES = new Set([
 const PREVIEW_SPEC = Object.freeze({
   "nostromo-amber": { kind: "warning", text: "High load detected", metrics: "bars" },
   "omni-tool": { kind: "info", text: "Processing batch...", metrics: "gauge" },
+  "pure-reflection": { kind: "success", text: "All systems nominal", metrics: "bars" },
   "renaissance-steel": { kind: "success", text: "All systems nominal", metrics: "bars" },
 });
 
@@ -646,7 +655,7 @@ async function auditPackageShape(state) {
   if (!skinRead.ok) {
     fail(section, "A13", "skin.json is readable JSON", skinRead.error);
     fail(section, "A14", "skin.json has a string id", "skin.json unreadable");
-    fail(section, "A15", "skin.json entry resolves and lists the three theme ids", "skin.json unreadable");
+    fail(section, "A15", "skin.json entry resolves and lists every theme id", "skin.json unreadable");
   } else {
     pass(section, "A13", "skin.json is readable JSON");
     const skin = skinRead.value;
@@ -736,7 +745,7 @@ function auditThemeCompleteness(state) {
   add(
     section,
     "B2",
-    "all three contract themes are present",
+    "all contract themes are present",
     missingContract.length === 0 ? "PASS" : "FAIL",
     missingContract.length === 0 ? CONTRACT_THEME_IDS.join(", ") : `missing: ${missingContract.join(", ")}`,
   );
@@ -780,13 +789,15 @@ function auditThemeCompleteness(state) {
     const reserved = typeof theme.id === "string" && RESERVED_IDS.includes(theme.id);
     add(section, `B:${key}:id-reserved`, `${key}: id is not reserved by the host`, reserved ? "FAIL" : "PASS", reserved ? `"${theme.id}" is reserved (${RESERVED_IDS.join(", ")})` : theme.id);
 
-    // colour scheme.
+    // colour scheme (declared per theme: three dark, one light).
+    const expectedScheme = THEME_SCHEMES[key];
+    const schemeOk = expectedScheme === undefined ? theme.colorScheme === "dark" || theme.colorScheme === "light" : theme.colorScheme === expectedScheme;
     add(
       section,
       `B:${key}:scheme`,
-      `${key}: colorScheme is "dark"`,
-      theme.colorScheme === "dark" ? "PASS" : "FAIL",
-      theme.colorScheme === "dark" ? "dark" : `got ${JSON.stringify(theme.colorScheme)}`,
+      `${key}: colorScheme is ${JSON.stringify(expectedScheme ?? "light|dark")}`,
+      schemeOk ? "PASS" : "FAIL",
+      schemeOk ? theme.colorScheme : `got ${JSON.stringify(theme.colorScheme)}`,
     );
 
     // localized copy.
@@ -1363,7 +1374,7 @@ function auditBundle(state) {
   add(
     section,
     "E5",
-    "lib/client.js inlines all three theme ids",
+    "lib/client.js inlines every contract theme id",
     missingIds.length === 0 ? "PASS" : "FAIL",
     missingIds.length === 0 ? CONTRACT_THEME_IDS.join(", ") : `missing: ${missingIds.join(", ")}`,
   );
@@ -1452,7 +1463,7 @@ function auditBundle(state) {
     add(
       section,
       "E14",
-      "inlined ROW_CSS contains the row, mono tokens and overlay base",
+      "inlined ROW_CSS contains the row, font tokens and overlay base",
       overlayPresent ? "PASS" : "FAIL",
       overlayPresent ? "`.dshft-card`, `--dsh-font-family-*`, `#dsh-ft-overlay` present" : "one of `.dshft-card`, `--dsh-font-family-*`, `#dsh-ft-overlay` is missing",
     );

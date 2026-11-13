@@ -9,9 +9,9 @@
     "E. Built bundle truth",
     "Z. Harness"
   ],
-  "generatedAt": "2026-10-30T17:28:52.469Z",
+  "generatedAt": "2026-11-13T12:06:42.289Z",
   "node": "v24.21.0",
-  "pluginRoot": "<repo>/dsh-futuristic-themes",
+  "pluginRoot": "/Users/igorhodorchenko/Project/dsh-futuristic-themes/dsh-futuristic-themes",
   "options": {
     "strict": false,
     "quiet": false
@@ -22,7 +22,7 @@
       "id": "A1",
       "title": "plugin root directory exists",
       "status": "PASS",
-      "detail": "<repo>/dsh-futuristic-themes"
+      "detail": "/Users/igorhodorchenko/Project/dsh-futuristic-themes/dsh-futuristic-themes"
     },
     {
       "section": "A. Package shape",
@@ -50,7 +50,7 @@
       "id": "A5",
       "title": "dsh.bundle.patch file exists",
       "status": "PASS",
-      "detail": "<repo>/dsh-futuristic-themes/cordis.patch.yml"
+      "detail": "/Users/igorhodorchenko/Project/dsh-futuristic-themes/dsh-futuristic-themes/cordis.patch.yml"
     },
     {
       "section": "A. Package shape",
@@ -85,14 +85,14 @@
       "id": "A10",
       "title": "package files whitelist includes lib/client.js",
       "status": "PASS",
-      "detail": "files: lib/index.js, lib/client.js, cordis.patch.yml, skin.json, README.md"
+      "detail": "files: lib/index.js, lib/client.js, cordis.patch.yml, skin.json, README.md, LICENSE"
     },
     {
       "section": "A. Package shape",
       "id": "A11",
       "title": "every file listed in package.files exists",
       "status": "PASS",
-      "detail": "5 files present"
+      "detail": "6 files present"
     },
     {
       "section": "A. Package shape",
@@ -120,14 +120,14 @@
       "id": "A15",
       "title": "skin.json entry resolves and lists every src/themes id",
       "status": "PASS",
-      "detail": "./lib/client.js -> [nostromo-amber, omni-tool, renaissance-steel]"
+      "detail": "./lib/client.js -> [nostromo-amber, omni-tool, pure-reflection, renaissance-steel]"
     },
     {
       "section": "A. Package shape",
       "id": "A16",
       "title": "lib/client.js exists and is not empty",
       "status": "PASS",
-      "detail": "49.3 KiB"
+      "detail": "59.9 KiB"
     },
     {
       "section": "A. Package shape",
@@ -148,14 +148,14 @@
       "id": "B1",
       "title": "src/themes is readable and contains theme JSON files",
       "status": "PASS",
-      "detail": "3 file(s): nostromo-amber, omni-tool, renaissance-steel"
+      "detail": "4 file(s): nostromo-amber, omni-tool, pure-reflection, renaissance-steel"
     },
     {
       "section": "B. Theme completeness",
       "id": "B2",
-      "title": "all three contract themes are present",
+      "title": "all contract themes are present",
       "status": "PASS",
-      "detail": "nostromo-amber, omni-tool, renaissance-steel"
+      "detail": "nostromo-amber, omni-tool, pure-reflection, renaissance-steel"
     },
     {
       "section": "B. Theme completeness",
@@ -169,7 +169,7 @@
       "id": "B4",
       "title": "theme ids are unique across files",
       "status": "PASS",
-      "detail": "3 parsed theme(s)"
+      "detail": "4 parsed theme(s)"
     },
     {
       "section": "B. Theme completeness",
@@ -441,6 +441,139 @@
       "section": "B. Theme completeness",
       "id": "B:omni-tool:tokens-values",
       "title": "omni-tool: every token value is a flat CSS string",
+      "status": "PASS",
+      "detail": "all values flattened strings"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:id",
+      "title": "pure-reflection: id is valid and matches the file name",
+      "status": "PASS",
+      "detail": "pure-reflection"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:id-reserved",
+      "title": "pure-reflection: id is not reserved by the host",
+      "status": "PASS",
+      "detail": "pure-reflection"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:scheme",
+      "title": "pure-reflection: colorScheme is \"light\"",
+      "status": "PASS",
+      "detail": "light"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:copy",
+      "title": "pure-reflection: en+zh label, tagline and description are non-empty",
+      "status": "PASS",
+      "detail": "6 strings"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:swatches",
+      "title": "pure-reflection: 4–6 swatches",
+      "status": "PASS",
+      "detail": "5 swatch(es)"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:swatches-hex",
+      "title": "pure-reflection: every swatch is a hex colour",
+      "status": "PASS",
+      "detail": "#F4F5F2, #E53935, #202426, #FFFFFF, #89918F"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:accent",
+      "title": "pure-reflection: accent is a hex colour",
+      "status": "PASS",
+      "detail": "#E53935"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:preview",
+      "title": "pure-reflection: preview payload is schema-valid",
+      "status": "PASS",
+      "detail": "success / bars"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:preview-spec",
+      "title": "pure-reflection: preview matches the theme design task",
+      "status": "PASS",
+      "detail": "success \"All systems nominal\" / bars"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:raw-roles",
+      "title": "pure-reflection: raw sidebarFill/menuFill values are strings",
+      "status": "PASS",
+      "detail": "2 raw roles checked"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:overrides",
+      "title": "pure-reflection: overrides (if any) are valid flat tokens",
+      "status": "PASS",
+      "detail": "14 override(s)"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:roles-known",
+      "title": "pure-reflection: every role is documented",
+      "status": "PASS",
+      "detail": "17 roles"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:roles-hex",
+      "title": "pure-reflection: colour roles are opaque #rrggbb",
+      "status": "PASS",
+      "detail": "all colour roles #rrggbb"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:keys",
+      "title": "pure-reflection: no unknown top-level keys",
+      "status": "PASS",
+      "detail": "10 keys"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:derive",
+      "title": "pure-reflection: roles derive the complete token set",
+      "status": "PASS",
+      "detail": "129 tokens"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:prepare",
+      "title": "pure-reflection: build validator reports no schema errors",
+      "status": "PASS",
+      "detail": "0 contrast warning(s)"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:tokens-required",
+      "title": "pure-reflection: all REQUIRED_TOKENS are present",
+      "status": "PASS",
+      "detail": "13 required tokens"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:tokens-namespace",
+      "title": "pure-reflection: every token is in the --dsw-alias-/--dsw-specific- namespace",
+      "status": "PASS",
+      "detail": "129 token names"
+    },
+    {
+      "section": "B. Theme completeness",
+      "id": "B:pure-reflection:tokens-values",
+      "title": "pure-reflection: every token value is a flat CSS string",
       "status": "PASS",
       "detail": "all values flattened strings"
     },
@@ -761,6 +894,97 @@
     },
     {
       "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:text-bg",
+      "title": "pure-reflection: primary text on app background >= 4.5:1",
+      "status": "PASS",
+      "detail": "14.30:1 (label-primary on bg-base)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:text-surface1",
+      "title": "pure-reflection: primary text on raised surface >= 4.5:1",
+      "status": "PASS",
+      "detail": "15.65:1 (label-primary on bg-layer-1)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:text-surface2",
+      "title": "pure-reflection: primary text on nested surface >= 4.5:1",
+      "status": "PASS",
+      "detail": "14.68:1 (label-primary on bg-layer-2)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:text-surface3",
+      "title": "pure-reflection: primary text on menu surface >= 4.5:1",
+      "status": "PASS",
+      "detail": "13.05:1 (label-primary on bg-layer-3)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:secondary-bg",
+      "title": "pure-reflection: secondary text on app background >= 3:1",
+      "status": "PASS",
+      "detail": "4.57:1 (label-secondary on bg-base)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:tertiary-bg",
+      "title": "pure-reflection: tertiary text on app background >= 3:1",
+      "status": "PASS",
+      "detail": "3.64:1 (label-tertiary on bg-base)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:caption-bg",
+      "title": "pure-reflection: caption text on app background >= 3:1",
+      "status": "PASS",
+      "detail": "3.36:1 (label-caption on bg-base)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:primary-bg",
+      "title": "pure-reflection: brand accent on app background >= 3:1",
+      "status": "PASS",
+      "detail": "3.86:1 (brand-primary on bg-base)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:warning-bg",
+      "title": "pure-reflection: warning colour on app background >= 3:1",
+      "status": "PASS",
+      "detail": "3.62:1 (state-warn-primary on bg-base)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:success-bg",
+      "title": "pure-reflection: success colour on app background >= 3:1",
+      "status": "PASS",
+      "detail": "3.56:1 (state-success-primary on bg-base)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:info-bg",
+      "title": "pure-reflection: info signal on app background >= 3:1",
+      "status": "PASS",
+      "detail": "4.94:1 (label-deep-diving on bg-base)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:button-label",
+      "title": "pure-reflection: button label on accent fill >= 3:1",
+      "status": "PASS",
+      "detail": "4.23:1 (label-primary-foreground on brand-primary)"
+    },
+    {
+      "section": "C. Contrast matrix",
+      "id": "C:pure-reflection:summary",
+      "title": "pure-reflection: no semantic contrast pair below its minimum",
+      "status": "PASS",
+      "detail": "12 pairs ok"
+    },
+    {
+      "section": "C. Contrast matrix",
       "id": "C:renaissance-steel:text-bg",
       "title": "renaissance-steel: primary text on app background >= 4.5:1",
       "status": "PASS",
@@ -855,14 +1079,14 @@
       "id": "D1",
       "title": "src/effects is readable and contains stylesheets",
       "status": "PASS",
-      "detail": "base.css, nostromo-amber.css, omni-tool.css, renaissance-steel.css"
+      "detail": "base.css, nostromo-amber.css, omni-tool.css, pure-reflection.css, renaissance-steel.css"
     },
     {
       "section": "D. Effects CSS discipline",
       "id": "D2",
       "title": "effects stylesheets parse into rules",
       "status": "PASS",
-      "detail": "4 sheet(s), 6 rule(s)"
+      "detail": "5 sheet(s), 8 rule(s)"
     },
     {
       "section": "D. Effects CSS discipline",
@@ -957,6 +1181,48 @@
     },
     {
       "section": "D. Effects CSS discipline",
+      "id": "D:pure-reflection:gated",
+      "title": "pure-reflection.css: selectors gated on theme + effects body attributes",
+      "status": "PASS",
+      "detail": "2 rule(s) gated"
+    },
+    {
+      "section": "D. Effects CSS discipline",
+      "id": "D:pure-reflection:target",
+      "title": "pure-reflection.css: selectors paint only #dsh-ft-overlay / ::before / ::after",
+      "status": "PASS",
+      "detail": "overlay-only"
+    },
+    {
+      "section": "D. Effects CSS discipline",
+      "id": "D:pure-reflection:theme-id",
+      "title": "pure-reflection.css: selectors use this sheet's own theme id",
+      "status": "PASS",
+      "detail": "pure-reflection"
+    },
+    {
+      "section": "D. Effects CSS discipline",
+      "id": "D:pure-reflection:declarations",
+      "title": "pure-reflection.css: no fixed positioning or pointer-events on painted layers",
+      "status": "PASS",
+      "detail": "none"
+    },
+    {
+      "section": "D. Effects CSS discipline",
+      "id": "D:pure-reflection:soft-declarations",
+      "title": "pure-reflection.css: declaration hygiene",
+      "status": "PASS",
+      "detail": "no !important / filter"
+    },
+    {
+      "section": "D. Effects CSS discipline",
+      "id": "D:pure-reflection:rules",
+      "title": "pure-reflection.css: paints at least one decorative rule",
+      "status": "PASS",
+      "detail": "2 rule(s)"
+    },
+    {
+      "section": "D. Effects CSS discipline",
       "id": "D:renaissance-steel:gated",
       "title": "renaissance-steel.css: selectors gated on theme + effects body attributes",
       "status": "PASS",
@@ -1002,7 +1268,7 @@
       "id": "D3",
       "title": "each contract theme owns src/effects/<id>.css",
       "status": "PASS",
-      "detail": "nostromo-amber, omni-tool, renaissance-steel"
+      "detail": "nostromo-amber, omni-tool, pure-reflection, renaissance-steel"
     },
     {
       "section": "D. Effects CSS discipline",
@@ -1030,14 +1296,14 @@
       "id": "E1",
       "title": "scripts/build.mjs exists",
       "status": "PASS",
-      "detail": "<repo>/dsh-futuristic-themes/scripts/build.mjs"
+      "detail": "/Users/igorhodorchenko/Project/dsh-futuristic-themes/dsh-futuristic-themes/scripts/build.mjs"
     },
     {
       "section": "E. Built bundle truth",
       "id": "E2",
       "title": "`scripts/build.mjs --check` exits 0",
       "status": "PASS",
-      "detail": "themes (3): nostromo-amber, omni-tool, renaissance-steel"
+      "detail": "themes (4): nostromo-amber, omni-tool, pure-reflection, renaissance-steel"
     },
     {
       "section": "E. Built bundle truth",
@@ -1049,9 +1315,9 @@
     {
       "section": "E. Built bundle truth",
       "id": "E5",
-      "title": "lib/client.js inlines all three theme ids",
+      "title": "lib/client.js inlines every contract theme id",
       "status": "PASS",
-      "detail": "nostromo-amber, omni-tool, renaissance-steel"
+      "detail": "nostromo-amber, omni-tool, pure-reflection, renaissance-steel"
     },
     {
       "section": "E. Built bundle truth",
@@ -1072,47 +1338,47 @@
       "id": "E8",
       "title": "lib/client.js inlines an extractable THEMES payload",
       "status": "PASS",
-      "detail": "3 theme(s)"
+      "detail": "4 theme(s)"
     },
     {
       "section": "E. Built bundle truth",
       "id": "E9",
       "title": "inlined THEMES carries every contract theme",
       "status": "PASS",
-      "detail": "nostromo-amber, omni-tool, renaissance-steel"
+      "detail": "nostromo-amber, omni-tool, pure-reflection, renaissance-steel"
     },
     {
       "section": "E. Built bundle truth",
       "id": "E10",
       "title": "inlined THEMES matches the current derived sources (fresh build)",
       "status": "PASS",
-      "detail": "3 theme(s) in sync"
+      "detail": "4 theme(s) in sync"
     },
     {
       "section": "E. Built bundle truth",
       "id": "E11",
       "title": "lib/client.js inlines an extractable EFFECTS_CSS payload",
       "status": "PASS",
-      "detail": "6326 chars"
+      "detail": "8325 chars"
     },
     {
       "section": "E. Built bundle truth",
       "id": "E12",
       "title": "inlined EFFECTS_CSS matches src/effects (fresh build)",
       "status": "PASS",
-      "detail": "6326 chars in sync"
+      "detail": "8325 chars in sync"
     },
     {
       "section": "E. Built bundle truth",
       "id": "E13",
       "title": "inlined ROW_CSS matches src/base.css + src/row.css (fresh build)",
       "status": "PASS",
-      "detail": "4431 chars in sync"
+      "detail": "5626 chars in sync"
     },
     {
       "section": "E. Built bundle truth",
       "id": "E14",
-      "title": "inlined ROW_CSS contains the row, mono tokens and overlay base",
+      "title": "inlined ROW_CSS contains the row, font tokens and overlay base",
       "status": "PASS",
       "detail": "`.dshft-card`, `--dsh-font-family-*`, `#dsh-ft-overlay` present"
     },
@@ -1121,7 +1387,7 @@
       "id": "E15",
       "title": "build/themes.json is fresh (preview data)",
       "status": "PASS",
-      "detail": "3 theme(s)"
+      "detail": "4 theme(s)"
     },
     {
       "section": "E. Built bundle truth",
@@ -1133,8 +1399,8 @@
   ],
   "summary": {
     "counts": {
-      "total": 159,
-      "pass": 159,
+      "total": 197,
+      "pass": 197,
       "fail": 0,
       "warn": 0,
       "info": 0,
@@ -1144,5 +1410,5 @@
     "warnings": [],
     "exitCode": 0
   },
-  "reportPath": "<repo>/docs/qa/audit-report.json"
+  "reportPath": "/Users/igorhodorchenko/Project/dsh-futuristic-themes/docs/qa/audit-report.json"
 }

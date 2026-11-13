@@ -1,17 +1,20 @@
 # dsh-futuristic-themes
 
-Three cinematic sci-fi themes for **DeepSeek Harness** (Desktop and `dsh web`), as one plugin:
+Four cinematic themes for **DeepSeek Harness** (Desktop and `dsh web`), as one plugin:
 
-| Theme | Mood | Accent |
-| --- | --- | --- |
-| **Nostromo Amber** | retro CRT terminal on almost-black warm metal — amber phosphor, monospace, restrained scanlines | `#FFB000` |
-| **Omni-tool** | holographic HUD — orange action accent on dark blue glass, cyan secondary signals, faint projection grid | `#FF9A1F` |
-| **Renaissance Steel** | cold industrial station console — flat steel surfaces, 1 px frames, almost no glow | `#5FB4E6` |
+| Theme | Scheme | Mood | Accent |
+| --- | --- | --- | --- |
+| **Nostromo Amber** | dark | retro CRT terminal on almost-black warm metal — amber phosphor, monospace, restrained scanlines | `#FFB000` |
+| **Omni-tool** | dark | holographic HUD — orange action accent on dark blue glass, cyan secondary signals, faint projection grid | `#FF9A1F` |
+| **Pure Reflection** | light | sterile white architecture, cold grey surfaces, near-black type and one saturated red accent; Inter + technical mono | `#E53935` |
+| **Renaissance Steel** | dark | cold industrial station console — flat steel surfaces, 1 px frames, almost no glow | `#5FB4E6` |
 
-All three replace the complete `--dsw-*` semantic palette, switch the whole interface to a
-monospace stack, and paint an optional decorative layer (scanlines / grid / vignette) that
-can be switched off in one click. They are dark-only by design: a cinematic theme should not
-change identity with the OS colour scheme.
+All four replace the complete `--dsw-*` semantic palette and paint an optional decorative
+layer (scanlines / grid / steel bezel / daylight and red corner marks) that can be switched
+off in one click. The three dark themes switch the whole interface to a monospace stack;
+Pure Reflection uses Inter for interface copy and keeps IBM Plex Mono for logs, code and
+technical data. The three dark themes are dark-only by design — a cinematic terminal should
+not change identity with the OS colour scheme; Pure Reflection is the light counterpart.
 
 ## Install
 
@@ -50,10 +53,10 @@ bundle stack automatically. Git installs pin the exact commit; re-add the packag
 ## Use
 
 1. Open **Settings → General**.
-2. Under **Futuristic themes**, click one of the three cards.
+2. Under **Futuristic themes**, click one of the four cards.
 3. The whole application repaints immediately; the choice survives restarts.
 4. **Decorative effects** switches the atmospheric layer (scanlines / holographic grid /
-   steel texture) on and off. The palette stays either way.
+   steel bezel / daylight + red corner marks) on and off. The palette stays either way.
 5. **Standard appearance** returns to the built-in light/dark appearance you used before.
 
 The host's own **Appearance** row keeps working: choosing Light, Dark or System there exits
@@ -64,13 +67,13 @@ the theme deliberately — the plugin steps aside and does not resurrect itself 
 DeepSeek Harness only accepts `light`, `dark` or `system` in its durable `ui-theme.preference`
 schema; a third-party theme id written there would make the next boot fail. The plugin keeps
 the selected theme in `localStorage` (`dsh-futuristic-themes:active`) and re-applies it after
-the host settings have loaded. While a theme is active, the durable preference stays on
-`dark` (all three themes are dark), so the first paint of the next boot is already dark and
-the theme lands a moment later.
+the host settings have loaded, before the app shell mounts. The durable preference stays the
+built-in value the user last chose, so the host's boot splash follows that scheme; the theme
+lands a moment later and the shell paints already themed.
 
 ## What the themes change
 
-The plugin registers three definitions through the official third-party extension point
+The plugin registers four definitions through the official third-party extension point
 (`ctx.theme.register`) and contributes one Appearance row (`settings.general.item`). Each
 theme is a complete override of the semantic token layer — backgrounds, surfaces, borders,
 text grades, states, buttons, menus, code blocks, diffs, scrollbars, sidebar, markdown and
@@ -81,19 +84,27 @@ only imports `react` and the host services it declares (`theme`, `slots`, `local
 Decorations are a single `position: fixed` overlay with `pointer-events: none`; they are
 disabled automatically for `prefers-reduced-motion` and can be switched off entirely.
 
+Pure Reflection is the one light theme, so its palette carries a small set of documented
+overrides for values the dark-first derivation cannot express: white labels on red fills and
+on the switch thumb, host-dark tooltips/toasts, a darker error red and button hover, a
+readable caption grade and a lighter modal scrim. Its warning role is `#D25C28` rather than
+the brief's `#E16A32`, which measures only 2.78:1 on the secondary surface.
+
 ### Typography
 
-While a theme is active the interface uses
+While a dark theme is active the interface uses
 `"IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SF Mono", Menlo, Consolas, monospace`
-(whichever is installed wins). No font files are bundled. A custom font chosen in
-**Settings → General → Fonts** still wins over the theme stack.
+(whichever is installed wins). Pure Reflection uses
+`"Inter", -apple-system, "Segoe UI", …` for interface copy and keeps the mono stack for code,
+logs and terminal. No font files are bundled. A custom font chosen in
+**Settings → General → Fonts** still wins over either theme stack.
 
 ## Development
 
 ```
 src/
   client.template.js     browser-half template (host applies data, no bundler needed)
-  base.css               mono stack + overlay container
+  base.css               per-theme typography + overlay container
   row.css                Settings appearance row
   effects/*.css          per-theme decorative layer (overlay-only)
   themes/*.json          palette roles + copy (one file per theme)
@@ -114,10 +125,11 @@ $NODE scripts/preview.mjs          # build/preview.html + build/theme-<id>.html
 
 ## Compatibility
 
-Tested against DeepSeek Harness Desktop **0.2.1-rc.5** and the matching `dsh web`. Requires
-the host theme extension point (`@deepseek-ai/dsh-client-ui-theme`) and the
-`settings.general.item` slot; both are shipped in 0.2.x. On a host that lacks them the plugin
-still loads and registers its themes, but the settings row is skipped with a console warning.
+Tested against DeepSeek Harness Desktop **0.2.1-rc.5** and the matching `dsh web`; the light
+theme was additionally smoke-tested live on Desktop **0.2.2-rc.2**. Requires the host
+theme extension point (`@deepseek-ai/dsh-client-ui-theme`) and the `settings.general.item`
+slot; both are shipped in 0.2.x. On a host that lacks them the plugin still loads and
+registers its themes, but the settings row is skipped with a console warning.
 
 ## Uninstall
 

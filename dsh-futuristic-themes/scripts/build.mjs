@@ -26,24 +26,24 @@ const STATIC_COPY = {
   en: {
     title: "Futuristic themes",
     description:
-      "Three cinematic themes for DeepSeek Harness. They replace the whole palette, switch the interface to monospace and add an optional decorative layer.",
+      "Four cinematic themes for DeepSeek Harness: three dark terminal-grade skins and one light architectural one. Every theme replaces the whole palette and adds an optional decorative layer.",
     "state.active": "Active",
     "default.label": "Standard appearance",
     "default.tagline": "Built-in light / dark",
     "default.description": "Return to the built-in light or dark appearance selected before.",
     "effects.label": "Decorative effects",
-    hint: "Monospace typography · dark themes · reduced-motion safe",
+    hint: "Inter / IBM Plex Mono · light & dark · reduced-motion safe",
   },
   zh: {
     title: "未来主义主题",
     description:
-      "为 DeepSeek Harness 提供的三套电影感主题：替换整套配色、切换为等宽字体，并提供可关闭的装饰层。",
+      "为 DeepSeek Harness 提供的四套电影感主题：三套深色终端风格与一套明亮建筑风格。每套主题替换整套配色，并提供可关闭的装饰层。",
     "state.active": "使用中",
     "default.label": "标准外观",
     "default.tagline": "内置浅色 / 深色",
     "default.description": "返回之前选择的内置浅色或深色外观。",
     "effects.label": "装饰效果",
-    hint: "等宽字体 · 深色主题 · 尊重减少动态效果设置",
+    hint: "Inter / IBM Plex Mono · 浅色与深色 · 尊重减少动态效果设置",
   },
 };
 

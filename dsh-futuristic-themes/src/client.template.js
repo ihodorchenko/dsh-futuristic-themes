@@ -1,8 +1,8 @@
 /**
  * dsh-futuristic-themes — browser half.
  *
- * Registers three dark cinematic themes with the host theme registry
- * (`ctx.theme`), restores the last selection across restarts from
+ * Registers four cinematic themes (three dark, one light) with the host theme
+ * registry (`ctx.theme`), restores the last selection across restarts from
  * localStorage, keeps the decorative effect layer in sync, and contributes an
  * Appearance row to Settings → General so the themes are switchable without a
  * page of their own.
@@ -10,8 +10,8 @@
  * The selection is intentionally NOT written to `ui-theme.preference`: the host
  * settings schema only accepts light/dark/system, and a third-party theme id
  * there would make `ThemeRuntime.buildSnapshot()` throw at boot. The durable
- * preference therefore stays a built-in value (`dark` while one of these
- * themes is active) and the selected skin lives in localStorage.
+ * preference therefore stays a built-in value (whatever light/dark/system the
+ * user last chose) and the selected skin lives in localStorage.
  *
  * The bundle is a hand-written lazy-CJS factory because the DSH client module
  * system materialises exactly this shape; there is no build step for the
@@ -45,10 +45,6 @@ window.__ModuleLoader__.load({
 			effects: PLUGIN_ID + ":effects",
 			lastBuiltin: PLUGIN_ID + ":last-builtin",
 		};
-
-		/** Monospace stack shared by the three themes; the first installed wins. */
-		var MONO =
-			'"IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SF Mono", Menlo, Consolas, monospace';
 
 		var THEME_IDS = THEMES.map(function (theme) {
 			return theme.id;

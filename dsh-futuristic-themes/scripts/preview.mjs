@@ -22,6 +22,12 @@ const ROOT = join(HERE, "..");
 const onlyIndex = process.argv.indexOf("--only");
 const ONLY = onlyIndex !== -1 ? process.argv[onlyIndex + 1] : null;
 const MONO = '"IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SF Mono", Menlo, Consolas, monospace';
+const SANS = '"Inter", "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif';
+
+/** Interface font stack for a theme: Inter for the light theme, mono for the dark ones. */
+function fontStackFor(theme) {
+  return theme.raw.colorScheme === "light" ? SANS : MONO;
+}
 
 const effectsDir = join(ROOT, "src/effects");
 const effectsCss = existsSync(effectsDir)
@@ -56,8 +62,8 @@ function cssVars(tokens) {
     .join("\n");
 }
 
-function bar(percent, danger) {
-  const tone = danger ? "--dsw-alias-state-warn-primary" : "--dsw-alias-brand-primary";
+function bar(percent, danger, neutralTone) {
+  const tone = danger ? "--dsw-alias-state-warn-primary" : neutralTone ?? "--dsw-alias-brand-primary";
   return `<div class="meter"><span style="width:${percent}%;background:var(${tone})"></span></div>`;
 }
 
@@ -75,19 +81,22 @@ function mockPage(theme) {
         : "--dsw-alias-state-business-primary";
   const noticeGlyph = notification.kind === "warning" ? "▲" : notification.kind === "success" ? "✓" : "ℹ";
 
+  /* Light themes keep neutral metrics quiet: only the warning bar carries an
+     accent, per the theme briefs. */
+  const neutralMetricTone = raw.colorScheme === "light" ? "--dsw-alias-label-tertiary" : undefined;
+
   const metricBlock =
     metrics === "gauge"
       ? `<div class="gauge" style="background:conic-gradient(var(--dsw-alias-brand-primary) 0 78%, var(--dsw-alias-bg-layer-3) 78% 100%)"><div class="gaugeInner">78%</div></div>
          <div class="metricLabel">Memory Usage</div>
          <svg class="spark" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,30 14,26 26,31 38,18 50,22 62,12 74,16 86,9 98,14 110,6 120,10" fill="none" stroke="var(--dsw-alias-label-deep-diving)" stroke-width="1.5"/></svg>`
-      : `<div class="metric"><span class="metricName">CPU</span><div class="metricRow">${bar(23)}<b>23%</b></div></div>
-         <div class="metric"><span class="metricName">MEM</span><div class="metricRow">${bar(67)}<b>67%</b></div></div>
+      : `<div class="metric"><span class="metricName">CPU</span><div class="metricRow">${bar(23, false, neutralMetricTone)}<b>23%</b></div></div>
+         <div class="metric"><span class="metricName">MEM</span><div class="metricRow">${bar(67, false, neutralMetricTone)}<b>67%</b></div></div>
          <div class="metric"><span class="metricName">TEMP</span><div class="metricRow">${bar(58, true)}<b>42°C</b></div></div>`;
 
-  const cards = ["nostromo-amber", "omni-tool", "renaissance-steel"]
+  const cards = Object.keys(themeById)
     .map((id) => {
       const other = themeById[id];
-      if (!other) return "";
       const selected = id === raw.id;
       const swatches = other.raw.swatches
         .map((colour) => `<span class="swatch" style="background:${colour}"></span>`)
@@ -115,7 +124,7 @@ ${cssVars(theme.tokens)}
   min-height: 100vh;
   background: var(--dsw-alias-bg-base);
   color: var(--dsw-alias-label-primary);
-  font-family: ${MONO};
+  font-family: ${fontStackFor(theme)};
   font-size: 13px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -177,6 +186,16 @@ ${cssVars(theme.tokens)}
 .notice { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-top: 1px solid var(--dsw-alias-border-l2); color: var(${noticeTone}); font-size: 12px; background: var(--dsw-alias-bg-layer-2); }
 .notice .glyph { text-shadow: 0 0 10px currentColor; }
 
+/* Light-scheme preview: keep the daylight look — no phosphor glows, no heavy
+   black elevation under the window. */
+body[data-color-scheme="light"] .win { box-shadow: 0 18px 48px rgba(32, 36, 38, 0.1); }
+body[data-color-scheme="light"] .terminal { box-shadow: none; }
+body[data-color-scheme="light"] .navItem.active::before,
+body[data-color-scheme="light"] .cursor { box-shadow: none; }
+body[data-color-scheme="light"] .promptLine .caret,
+body[data-color-scheme="light"] .notice .glyph { text-shadow: none; }
+body[data-color-scheme="light"] .dot { box-shadow: none; }
+
 /* ------------------------------------------------------------ settings row */
 .settings { margin-top: 26px; border: 1px solid var(--dsw-alias-border-l2); background: var(--dsw-alias-bg-layer-1); padding: 16px 18px 14px; }
 .settingsTitle { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--dsw-alias-label-tertiary); margin-bottom: 12px; }
@@ -203,12 +222,12 @@ ${effectsCss}
 @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
 </style>
 </head>
-<body data-dsh-futuristic-theme="${raw.id}" data-dsh-futuristic-effects="on">
+<body data-dsh-futuristic-theme="${raw.id}" data-dsh-futuristic-effects="on" data-color-scheme="${raw.colorScheme}">
 <div class="page">
   <div class="brand">
     <div class="brandMark">◈</div>
     <h1>DeepSeek Harness <span>/ Themes</span></h1>
-    <div class="kicker">${raw.id} · dark · ${theme.tokens ? Object.keys(theme.tokens).length : 0} tokens</div>
+    <div class="kicker">${raw.id} · ${raw.colorScheme} · ${theme.tokens ? Object.keys(theme.tokens).length : 0} tokens</div>
   </div>
 
   <div class="win">
@@ -255,7 +274,7 @@ ${effectsCss}
     </div>
     <div class="settingsFoot">
       <span class="switch"><span class="track"><span class="knob"></span></span> Decorative effects</span>
-      <span>Monospace typography · dark themes · reduced-motion safe</span>
+      <span>Inter / IBM Plex Mono · light &amp; dark · reduced-motion safe</span>
     </div>
   </div>
 

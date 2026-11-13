@@ -10,6 +10,15 @@ body[data-dsh-futuristic-theme] {
   --dsh-font-family-terminal: "IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SF Mono", Menlo, Consolas, monospace;
 }
 
+/* Pure Reflection is the one light theme: interface copy is Inter, while
+   technical data — logs, code, identifiers, timecodes — stays IBM Plex Mono. */
+body[data-dsh-futuristic-theme="pure-reflection"] {
+  --dsh-font-family-text: "Inter", "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --dsh-font-family-code: "IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SF Mono", Menlo, Consolas, monospace;
+  --dsh-font-family-terminal: "IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SF Mono", Menlo, Consolas, monospace;
+}
+
 /* One fixed decorative layer per page; theme sheets paint its pseudo
    elements. It never takes pointer events, so it cannot block the app. */
 #dsh-ft-overlay {

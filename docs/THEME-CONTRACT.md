@@ -6,28 +6,35 @@ installing anything into the running app.
 
 ## 1. What we are building
 
-A DeepSeek Harness plugin (`dsh-futuristic-themes/`) that registers three dark cinematic
-themes with the host theme registry and adds an Appearance row under **Settings → General**:
+A DeepSeek Harness plugin (`dsh-futuristic-themes/`) that registers four cinematic themes with
+the host theme registry and adds an Appearance row under **Settings → General**. Three are
+dark, one is light:
 
-| id | label | concept source |
-| --- | --- | --- |
-| `nostromo-amber` | Nostromo Amber | `Nostromo-Amber.md` + amber panel in the concept image |
-| `omni-tool` | Omni-tool | `Omni-tool.md` + holographic panel in the concept image |
-| `renaissance-steel` | Renaissance Steel | `Renaissance-Steel.md` + steel panel in the concept image |
+| id | label | scheme | concept source |
+| --- | --- | --- | --- |
+| `nostromo-amber` | Nostromo Amber | dark | `Nostromo-Amber.md` + amber panel in the concept image |
+| `omni-tool` | Omni-tool | dark | `Omni-tool.md` + holographic panel in the concept image |
+| `pure-reflection` | Pure Reflection | light | `Pure-Reflection.md` (standalone brief, no concept image) |
+| `renaissance-steel` | Renaissance Steel | dark | `Renaissance-Steel.md` + steel panel in the concept image |
 
-The concept image is `Три футуристические темы DeepSeek Harness.png` in the workspace root.
-The three markdown files are the authoritative design briefs (Russian). Read them.
+The concept image is `Три футуристические темы DeepSeek Harness.png` in the workspace root (it
+predates Pure Reflection). The four markdown files are the authoritative design briefs
+(Russian). Read them.
 
 ## 2. Files you own
 
-Designer of `nostromo-amber` writes **only**:
+Designer of `<id>` writes **only**:
 
-- `dsh-futuristic-themes/src/themes/nostromo-amber.json` — palette + copy
-- `dsh-futuristic-themes/src/effects/nostromo-amber.css` — decorative layer
+- `dsh-futuristic-themes/src/themes/<id>.json` — palette + copy
+- `dsh-futuristic-themes/src/effects/<id>.css` — decorative layer
 
 Never touch another theme's files, `src/client.template.js`, `src/base.css`, `src/row.css`,
 `scripts/`, `lib/`, `package.json` or the workspace root. If something outside your files
 looks wrong, report it instead of editing it.
+
+Typography is the one shared layer: `src/base.css` gives the dark themes the mono stack and
+gives `pure-reflection` Inter for interface copy with IBM Plex Mono kept for logs, code and
+technical data. A new **light** theme needs its own rule there; do not paint host components.
 
 `build/` is generated; do not hand-edit it. Concurrent preview runs write different files
 there, which is safe.
@@ -37,7 +44,7 @@ there, which is safe.
 ```jsonc
 {
   "id": "nostromo-amber",              // lowercase, hyphens, must match file name
-  "colorScheme": "dark",               // all three themes are dark
+  "colorScheme": "dark",               // "dark" | "light"; it is registered with the host
   "label":      { "en": "...", "zh": "..." },
   "tagline":    { "en": "ALIEN / ROMULUS INSPIRED", "zh": "..." },
   "description":{ "en": "...", "zh": "..." },   // one sentence, shown in the row
@@ -91,6 +98,14 @@ The build prints contrast warnings (text ≥ 4.5:1 on app/raised surfaces, secon
 accents ≥ 3:1, button label on accent ≥ 3:1). Warnings do not fail the build, but a theme
 that leaves obvious warnings is not done — fix the palette or add an override.
 
+The derivation was shaped by the three dark themes, so a light theme needs a handful of
+explicit overrides where mixing towards `bg` washes a value out or a dark-theme convention
+does not carry over. `pure-reflection.json` documents each one: white label/switch thumb,
+dark tooltip and toast (the host keeps both dark in light mode), a darker error red and
+button hover for readable white labels, a caption that stays ≥ 3:1, and a 26 % modal scrim.
+Its warning role is `#D25C28` rather than the brief's `#E16A32`, because the brief colour
+measures only 2.78:1 on `surface3` while this one keeps ≥ 3:1 on every light surface.
+
 ## 4. Effects CSS contract
 
 `src/effects/<id>.css` is inlined into the plugin's stylesheet and only applies while:
@@ -137,6 +152,17 @@ energetic than Nostromo but still clean for daily work. Reference tokens from th
 `secondary` signal `#3FD0FF`, warning `#FF4A3D`. Orange commands actions; cyan is secondary
 signal, never a competing accent everywhere.
 
+**Pure Reflection** — the one light theme: sterile white architecture lit from above, cold
+grey surfaces, near-black typography and a single saturated red accent. Flat surfaces, thin
+1 px borders, mostly straight corners with small chamfers, no scanlines, no glow and no
+motion; decoration is a daylight wash, two red hairline corner marks, a chamfered bottom-right
+corner and a restrained vignette. Reference tokens from the brief: `bg #F4F5F2`,
+`surface #FFFFFF`, `surfaceAlt #E9EBE8`, `border #D3D7D3`, `dim #89918F`, `text #202426`,
+`secondary #687174`, `primary #E53935`, `bright #FF514A`, `ok #568C72`, `warning #E16A32`.
+The implementation maps the brief to four surface steps (white panels, near-white dialogue /
+input surfaces, `surfaceAlt` for hover and elevated rows) and keeps red for selection markers,
+the primary action and focus only — never for success, warnings or long text.
+
 **Renaissance Steel** — restrained industrial console, cold grey-blue, flat surfaces, 1 px
 frames, almost no glow, prioritising hierarchy and long-session comfort. Concept image
 shows double thin cyan frames, steel labels, small gauges. Reference tokens from the brief:
@@ -167,6 +193,10 @@ Node lives outside PATH in this environment; always call it with the absolute pa
 ## 7. Definition of done for a theme
 
 - JSON validates; no remaining contrast warnings that hide readable-text failures.
+- A **light** theme additionally: every surface step and fine border is legible on white,
+  white labels on accent fills and on the switch thumb are explicit, dark tooltips/toasts do
+  not inherit light-theme values, and error text keeps ≥ 4.5:1 (the light theme overrides
+  the derived warning-orange error to `#C62828`).
 - The preview screenshot reads as the intended theme at a glance (colour identity, contrast,
   borders, accents) and does not fight the concept image's mood.
 - Effects layer adds atmosphere but looks fine when the switch is off.

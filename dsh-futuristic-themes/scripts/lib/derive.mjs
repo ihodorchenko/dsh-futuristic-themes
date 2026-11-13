@@ -5,7 +5,7 @@
  * borders, text grades, accents, states). This module expands those roles into
  * the full `--dsw-alias-*` / `--dsw-specific-*` token set that the DSH client
  * theme registry accepts, so every theme is complete by construction and the
- * three themes stay internally consistent.
+ * themes stay internally consistent.
  *
  * Per-token exact overrides are merged last, which is the escape hatch for a
  * palette that needs something the scale cannot express.
