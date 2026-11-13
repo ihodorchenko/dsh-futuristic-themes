@@ -53,17 +53,19 @@ cold cyan secondary signals (`#3FD0FF` reserved for informational states), warm 
 text, thin warm frames. Decorative layer: top-fading cyan/warm projection grid + corner glows.
 Orange commands actions; cyan never competes with it.
 
-### Pure Reflection — sterile white architecture
-*Original brief: [`docs/design-briefs/Pure-Reflection.md`](docs/design-briefs/Pure-Reflection.md)*
-The light theme of the set: off-white canvas (`#F4F5F2`), pure white panels (`#FFFFFF`),
-near-white dialogs and inputs (`#F7F8F5`), cold grey borders (`#D3D7D3`) and hover surfaces
-(`#E9EBE8`), almost-black text (`#202426`), and a single saturated red accent (`#E53935`,
-hover `#FF514A`). Muted green `#568C72` and burnt orange `#D25C28` are reserved for states;
-error text is a darker `#C62828`. Inter for interface copy, IBM Plex Mono for logs, code,
-identifiers and metrics. Decorative layer: overhead daylight wash, two red hairline corner
-marks, a chamfered bottom-right corner and a restrained vignette — no scanlines, noise, glow
-or motion. Red is dosed: selection markers, the primary action and focus, never success,
-warning or long text.
+### Pure Reflection — the City of Glass
+*Original brief: [`docs/design-briefs/Pure-Reflection.md`](docs/design-briefs/Pure-Reflection.md) ·
+City of Glass addendum: [`docs/design-briefs/Pure-Reflection-Addendum.md`](docs/design-briefs/Pure-Reflection-Addendum.md)*
+The light theme of the set: cool white/light-grey architecture (`#EFF1F4` canvas,
+`#FFFFFF` panels, `#FBFCFD` dialogs, `#E5E9ED` hover), crisp 1 px cold-grey borders
+(`#C9D0D6`), near-black text (`#14181C`) and Runner's-Vision red (`#E10600`, bright `#FF2D2D`)
+for navigation, selection, focus and the primary action. Functional district colours:
+business blue `#1E6FD9` (links, info, charts, Preview badge), residential orange `#D9480F`
+warnings with a brighter `#F76707` signature, technical yellow `#F2C200` / `#E0A800` (charts,
+district ticks) and technical green `#1B8A4B` for success; errors use `#B00020`. Sharp 0–4 px
+radii, Inter for interface copy, IBM Plex Mono for logs, code, identifiers and metrics.
+Decorative layer: overhead daylight, red L-brackets, a red 45° chamfer and a small
+blue/orange/yellow district signature — no scanlines, noise, glow or motion.
 
 ### Renaissance Steel — cold industrial console
 *Original brief: [`docs/design-briefs/Renaissance-Steel.md`](docs/design-briefs/Renaissance-Steel.md)*
@@ -72,11 +74,11 @@ accent, `#BCD0E0` text, `#5FD3B0` success, `#E2553F` warning. Almost no glow: a 
 light, a hairline steel bezel and a soft corner vignette — the calmest dark theme of the set.
 
 All four replace the complete semantic `--dsw-*` token set (127 derived tokens each; Pure
-Reflection adds two light-mode tokens and registers 129). The three dark themes switch the
-interface to a monospace stack; Pure Reflection uses Inter for interface copy and keeps IBM
-Plex Mono for technical roles. The decorative layer can be disabled in one click and respects
-`prefers-reduced-motion`. The three dark themes are dark-only by design; Pure Reflection is
-the light counterpart.
+Reflection adds nine light/district tokens and registers 136). The three dark themes switch the
+interface to a monospace stack; Pure Reflection uses Inter for interface copy, keeps IBM Plex
+Mono for technical roles, and sharpens the host radius scale to 0–4 px. The decorative layer
+can be disabled in one click and respects `prefers-reduced-motion`. The three dark themes are
+dark-only by design; Pure Reflection is the light counterpart.
 
 ## How it works
 
@@ -86,9 +88,10 @@ the light counterpart.
   [`scripts/lib/derive.mjs`](dsh-futuristic-themes/scripts/lib/derive.mjs) into the full token
   set, so every theme is complete by construction; the build fails on missing required tokens
   and warns on contrast regressions. The derivation is optimised for dark surfaces, so the
-  light theme carries a small, documented set of overrides (white labels on accent fills and
-  the switch thumb, dark tooltips/toasts, a darker error red, a readable caption, a lighter
-  modal scrim).
+  light theme carries 24 documented overrides: white labels on accent fills and the switch
+  thumb, dark tooltips/toasts, a darker error red, a readable caption, a lighter modal scrim,
+  and the district tokens the role schema does not expose (blue links/info/charts/business
+  badge, yellow technical charts, red selected border/trajectory, amber “done”).
 - `ui-theme.preference` only accepts `light|dark|system`, so a theme id is never written there
   (that would crash the next boot with `theme registry lost`). The selected theme lives in
   `localStorage` and is re-applied after the host settings document loads; the durable
@@ -102,7 +105,7 @@ the light counterpart.
 ## Verification
 
 - **Static audit** (`tools/audit-themes.mjs`, independent of the build): **197/197 checks
-  PASS**, 0 failures, 0 warnings — package shape, four theme definitions, 127/127/129/127-token
+  PASS**, 0 failures, 0 warnings — package shape, four theme definitions, 127/127/136/127-token
   derivation, full WCAG contrast matrix, effects-CSS discipline, built-bundle truth.
 - **End-to-end verification** for the three dark themes on a live `dsh web` instance
   (`docs/qa/verification-report.md`): **8/8 items PASS** — all three themes via the row and via
@@ -111,12 +114,12 @@ the light counterpart.
   the overlay), menus/composer/settings regressions clean, live contrast body 12.6–15.4:1 and
   composer 11.2–13.1:1.
 - **Pure Reflection live check** on a private `dsh web` instance (2026-11-13,
-  `docs/qa/pure-reflection-verification.md`): registers as a light theme with all **129 tokens
-  inline**, `color-scheme: light`; five-card row with the Pure
-  Reflection card active; settings dialog and empty state checked in English (account menu and
-  onboarding dialog in the Russian locale); effects switch pixel-diff 4.7 % confined to the
-  overlay; live contrast 14.3:1 body, 14.0:1 composer, 13.7:1 sidebar, zero low-contrast text
-  in the DOM scan.
+  `docs/qa/pure-reflection-verification.md`): registers as a light theme with all **136 tokens
+  inline** (`color-scheme: light`); five-card row with the Pure Reflection card active; sharp
+  radii confirmed live (`2 px` cards, `4 px` dialog); settings dialog, onboarding dialog and
+  empty state checked in English; effects switch verified (overlay gradients on/off, red
+  brackets and district ticks at the viewport corners); live contrast 15.77:1 body, 17.37:1
+  composer, 16.90:1 sidebar, zero low-contrast text in the DOM scan.
 - Two LOW defects found by the dark-theme verifier (boot-restore grace race; missing explicit
   `:focus-visible` ring) are fixed and re-verified; details and evidence (28+ screenshots,
   reproducible step scripts) are in [`docs/qa/`](docs/qa/).

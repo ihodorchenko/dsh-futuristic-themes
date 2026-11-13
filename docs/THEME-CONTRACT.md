@@ -32,9 +32,11 @@ Never touch another theme's files, `src/client.template.js`, `src/base.css`, `sr
 `scripts/`, `lib/`, `package.json` or the workspace root. If something outside your files
 looks wrong, report it instead of editing it.
 
-Typography is the one shared layer: `src/base.css` gives the dark themes the mono stack and
-gives `pure-reflection` Inter for interface copy with IBM Plex Mono kept for logs, code and
-technical data. A new **light** theme needs its own rule there; do not paint host components.
+Typography and shape are the shared layers: `src/base.css` gives the dark themes the mono
+stack and gives `pure-reflection` Inter for interface copy with IBM Plex Mono kept for logs,
+code and technical data. It also sharpens the host radius scale for `pure-reflection` only
+(`0/1/2/3/4/4 px` instead of `4–28 px`) so the UI reads as planar architecture. A new **light**
+theme needs its own rule there; do not paint host components.
 
 `build/` is generated; do not hand-edit it. Concurrent preview runs write different files
 there, which is safe.
@@ -100,11 +102,14 @@ that leaves obvious warnings is not done — fix the palette or add an override.
 
 The derivation was shaped by the three dark themes, so a light theme needs a handful of
 explicit overrides where mixing towards `bg` washes a value out or a dark-theme convention
-does not carry over. `pure-reflection.json` documents each one: white label/switch thumb,
-dark tooltip and toast (the host keeps both dark in light mode), a darker error red and
-button hover for readable white labels, a caption that stays ≥ 3:1, and a 26 % modal scrim.
-Its warning role is `#D25C28` rather than the brief's `#E16A32`, because the brief colour
-measures only 2.78:1 on `surface3` while this one keeps ≥ 3:1 on every light surface.
+does not carry over. `pure-reflection.json` documents all 24: white label/switch thumb, dark
+tooltip and toast (the host keeps both dark in light mode), a darker error red and button
+hover for readable white labels, a caption that stays ≥ 3:1, a 24 % modal scrim, and the
+district tokens that do not exist in the role schema — blue links/info/charts/business badge,
+yellow technical charts, red selected border and trajectory, amber “done”. Its warning role is
+`#D9480F` rather than the brief's `#E16A32`, because the brief colour measures only 2.78:1 on
+`surface3` while this one keeps ≥ 3:1 on every light surface; the brighter district orange
+`#F76707` is used in the picker swatch and the decorative signature, not as text.
 
 ## 4. Effects CSS contract
 
@@ -152,16 +157,17 @@ energetic than Nostromo but still clean for daily work. Reference tokens from th
 `secondary` signal `#3FD0FF`, warning `#FF4A3D`. Orange commands actions; cyan is secondary
 signal, never a competing accent everywhere.
 
-**Pure Reflection** — the one light theme: sterile white architecture lit from above, cold
-grey surfaces, near-black typography and a single saturated red accent. Flat surfaces, thin
-1 px borders, mostly straight corners with small chamfers, no scanlines, no glow and no
-motion; decoration is a daylight wash, two red hairline corner marks, a chamfered bottom-right
-corner and a restrained vignette. Reference tokens from the brief: `bg #F4F5F2`,
-`surface #FFFFFF`, `surfaceAlt #E9EBE8`, `border #D3D7D3`, `dim #89918F`, `text #202426`,
-`secondary #687174`, `primary #E53935`, `bright #FF514A`, `ok #568C72`, `warning #E16A32`.
-The implementation maps the brief to four surface steps (white panels, near-white dialogue /
-input surfaces, `surfaceAlt` for hover and elevated rows) and keeps red for selection markers,
-the primary action and focus only — never for success, warnings or long text.
+**Pure Reflection** — the one light theme: the sterile white / light-grey City of Glass, with
+Runner's-Vision red as the navigation and action accent and functional blue / orange / yellow
+district colours. Flat surfaces, thin 1 px borders, sharp `0–4 px` radii, no scanlines, no glow
+and no motion; decoration is a daylight wash, two red L-brackets, a red chamfer and a small
+blue/orange/yellow district signature. Reference tokens: `bg #EFF1F4`, `surface #FFFFFF`,
+`surfaceAlt #E5E9ED`, `border #C9D0D6`, `dim #8A939B`, `text #14181C`, `secondary #59646D`,
+`primary #E10600`, `bright #FF2D2D`, `ok #1B8A4B`, `warning #D9480F`, `info #1E6FD9`, error
+`#B00020`. The implementation maps the district colours onto the semantics the host exposes:
+red for selection/focus/primary action, blue for links/info/charts and the business badge,
+orange for warnings, yellow for technical charts and the district signature, green for success.
+The full direction is in [`design-briefs/Pure-Reflection-Addendum.md`](design-briefs/Pure-Reflection-Addendum.md).
 
 **Renaissance Steel** — restrained industrial console, cold grey-blue, flat surfaces, 1 px
 frames, almost no glow, prioritising hierarchy and long-session comfort. Concept image
@@ -195,8 +201,10 @@ Node lives outside PATH in this environment; always call it with the absolute pa
 - JSON validates; no remaining contrast warnings that hide readable-text failures.
 - A **light** theme additionally: every surface step and fine border is legible on white,
   white labels on accent fills and on the switch thumb are explicit, dark tooltips/toasts do
-  not inherit light-theme values, and error text keeps ≥ 4.5:1 (the light theme overrides
-  the derived warning-orange error to `#C62828`).
+  not inherit light-theme values, error text keeps ≥ 4.5:1 (the light theme overrides the
+  derived warning-orange error to `#B00020`), and Runner's-Vision red is not the only semantic
+  colour — district blue/orange/yellow stay reserved for information, warnings and technical
+  data.
 - The preview screenshot reads as the intended theme at a glance (colour identity, contrast,
   borders, accents) and does not fight the concept image's mood.
 - Effects layer adds atmosphere but looks fine when the switch is off.

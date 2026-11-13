@@ -9,7 +9,7 @@
     "E. Built bundle truth",
     "Z. Harness"
   ],
-  "generatedAt": "2026-11-13T12:06:42.289Z",
+  "generatedAt": "2026-11-13T12:42:21.838Z",
   "node": "v24.21.0",
   "pluginRoot": "/Users/igorhodorchenko/Project/dsh-futuristic-themes/dsh-futuristic-themes",
   "options": {
@@ -127,7 +127,7 @@
       "id": "A16",
       "title": "lib/client.js exists and is not empty",
       "status": "PASS",
-      "detail": "59.9 KiB"
+      "detail": "61.0 KiB"
     },
     {
       "section": "A. Package shape",
@@ -477,21 +477,21 @@
       "id": "B:pure-reflection:swatches",
       "title": "pure-reflection: 4–6 swatches",
       "status": "PASS",
-      "detail": "5 swatch(es)"
+      "detail": "6 swatch(es)"
     },
     {
       "section": "B. Theme completeness",
       "id": "B:pure-reflection:swatches-hex",
       "title": "pure-reflection: every swatch is a hex colour",
       "status": "PASS",
-      "detail": "#F4F5F2, #E53935, #202426, #FFFFFF, #89918F"
+      "detail": "#EFF1F4, #E10600, #1E6FD9, #F76707, #F2C200, #14181C"
     },
     {
       "section": "B. Theme completeness",
       "id": "B:pure-reflection:accent",
       "title": "pure-reflection: accent is a hex colour",
       "status": "PASS",
-      "detail": "#E53935"
+      "detail": "#E10600"
     },
     {
       "section": "B. Theme completeness",
@@ -519,7 +519,7 @@
       "id": "B:pure-reflection:overrides",
       "title": "pure-reflection: overrides (if any) are valid flat tokens",
       "status": "PASS",
-      "detail": "14 override(s)"
+      "detail": "24 override(s)"
     },
     {
       "section": "B. Theme completeness",
@@ -547,7 +547,7 @@
       "id": "B:pure-reflection:derive",
       "title": "pure-reflection: roles derive the complete token set",
       "status": "PASS",
-      "detail": "129 tokens"
+      "detail": "136 tokens"
     },
     {
       "section": "B. Theme completeness",
@@ -568,7 +568,7 @@
       "id": "B:pure-reflection:tokens-namespace",
       "title": "pure-reflection: every token is in the --dsw-alias-/--dsw-specific- namespace",
       "status": "PASS",
-      "detail": "129 token names"
+      "detail": "136 token names"
     },
     {
       "section": "B. Theme completeness",
@@ -897,84 +897,84 @@
       "id": "C:pure-reflection:text-bg",
       "title": "pure-reflection: primary text on app background >= 4.5:1",
       "status": "PASS",
-      "detail": "14.30:1 (label-primary on bg-base)"
+      "detail": "15.77:1 (label-primary on bg-base)"
     },
     {
       "section": "C. Contrast matrix",
       "id": "C:pure-reflection:text-surface1",
       "title": "pure-reflection: primary text on raised surface >= 4.5:1",
       "status": "PASS",
-      "detail": "15.65:1 (label-primary on bg-layer-1)"
+      "detail": "17.84:1 (label-primary on bg-layer-1)"
     },
     {
       "section": "C. Contrast matrix",
       "id": "C:pure-reflection:text-surface2",
       "title": "pure-reflection: primary text on nested surface >= 4.5:1",
       "status": "PASS",
-      "detail": "14.68:1 (label-primary on bg-layer-2)"
+      "detail": "17.37:1 (label-primary on bg-layer-2)"
     },
     {
       "section": "C. Contrast matrix",
       "id": "C:pure-reflection:text-surface3",
       "title": "pure-reflection: primary text on menu surface >= 4.5:1",
       "status": "PASS",
-      "detail": "13.05:1 (label-primary on bg-layer-3)"
+      "detail": "14.62:1 (label-primary on bg-layer-3)"
     },
     {
       "section": "C. Contrast matrix",
       "id": "C:pure-reflection:secondary-bg",
       "title": "pure-reflection: secondary text on app background >= 3:1",
       "status": "PASS",
-      "detail": "4.57:1 (label-secondary on bg-base)"
+      "detail": "5.35:1 (label-secondary on bg-base)"
     },
     {
       "section": "C. Contrast matrix",
       "id": "C:pure-reflection:tertiary-bg",
       "title": "pure-reflection: tertiary text on app background >= 3:1",
       "status": "PASS",
-      "detail": "3.64:1 (label-tertiary on bg-base)"
+      "detail": "3.76:1 (label-tertiary on bg-base)"
     },
     {
       "section": "C. Contrast matrix",
       "id": "C:pure-reflection:caption-bg",
       "title": "pure-reflection: caption text on app background >= 3:1",
       "status": "PASS",
-      "detail": "3.36:1 (label-caption on bg-base)"
+      "detail": "3.94:1 (label-caption on bg-base)"
     },
     {
       "section": "C. Contrast matrix",
       "id": "C:pure-reflection:primary-bg",
       "title": "pure-reflection: brand accent on app background >= 3:1",
       "status": "PASS",
-      "detail": "3.86:1 (brand-primary on bg-base)"
+      "detail": "4.39:1 (brand-primary on bg-base)"
     },
     {
       "section": "C. Contrast matrix",
       "id": "C:pure-reflection:warning-bg",
       "title": "pure-reflection: warning colour on app background >= 3:1",
       "status": "PASS",
-      "detail": "3.62:1 (state-warn-primary on bg-base)"
+      "detail": "3.80:1 (state-warn-primary on bg-base)"
     },
     {
       "section": "C. Contrast matrix",
       "id": "C:pure-reflection:success-bg",
       "title": "pure-reflection: success colour on app background >= 3:1",
       "status": "PASS",
-      "detail": "3.56:1 (state-success-primary on bg-base)"
+      "detail": "3.88:1 (state-success-primary on bg-base)"
     },
     {
       "section": "C. Contrast matrix",
       "id": "C:pure-reflection:info-bg",
       "title": "pure-reflection: info signal on app background >= 3:1",
       "status": "PASS",
-      "detail": "4.94:1 (label-deep-diving on bg-base)"
+      "detail": "4.29:1 (label-deep-diving on bg-base)"
     },
     {
       "section": "C. Contrast matrix",
       "id": "C:pure-reflection:button-label",
       "title": "pure-reflection: button label on accent fill >= 3:1",
       "status": "PASS",
-      "detail": "4.23:1 (label-primary-foreground on brand-primary)"
+      "detail": "4.97:1 (label-primary-foreground on brand-primary)"
     },
     {
       "section": "C. Contrast matrix",
@@ -1359,21 +1359,21 @@
       "id": "E11",
       "title": "lib/client.js inlines an extractable EFFECTS_CSS payload",
       "status": "PASS",
-      "detail": "8325 chars"
+      "detail": "8785 chars"
     },
     {
       "section": "E. Built bundle truth",
       "id": "E12",
       "title": "inlined EFFECTS_CSS matches src/effects (fresh build)",
       "status": "PASS",
-      "detail": "8325 chars in sync"
+      "detail": "8785 chars in sync"
     },
     {
       "section": "E. Built bundle truth",
       "id": "E13",
       "title": "inlined ROW_CSS matches src/base.css + src/row.css (fresh build)",
       "status": "PASS",
-      "detail": "5626 chars in sync"
+      "detail": "5928 chars in sync"
     },
     {
       "section": "E. Built bundle truth",

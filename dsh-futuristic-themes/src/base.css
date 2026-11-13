@@ -11,12 +11,20 @@ body[data-dsh-futuristic-theme] {
 }
 
 /* Pure Reflection is the one light theme: interface copy is Inter, while
-   technical data — logs, code, identifiers, timecodes — stays IBM Plex Mono. */
+   technical data — logs, code, identifiers, timecodes — stays IBM Plex Mono.
+   The radius scale is sharpened for this theme only: Mirror's Edge architecture
+   is planar and angular, so the host's 4–28 px radii become 0–4 px here. */
 body[data-dsh-futuristic-theme="pure-reflection"] {
   --dsh-font-family-text: "Inter", "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
   --dsh-font-family-code: "IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SF Mono", Menlo, Consolas, monospace;
   --dsh-font-family-terminal: "IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SF Mono", Menlo, Consolas, monospace;
+  --dsw-radius-xs: 0px;
+  --dsw-radius-sm: 1px;
+  --dsw-radius-md: 2px;
+  --dsw-radius-lg: 3px;
+  --dsw-radius-xl: 4px;
+  --dsw-radius-panel: 4px;
 }
 
 /* One fixed decorative layer per page; theme sheets paint its pseudo

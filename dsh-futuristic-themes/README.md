@@ -6,15 +6,17 @@ Four cinematic themes for **DeepSeek Harness** (Desktop and `dsh web`), as one p
 | --- | --- | --- | --- |
 | **Nostromo Amber** | dark | retro CRT terminal on almost-black warm metal — amber phosphor, monospace, restrained scanlines | `#FFB000` |
 | **Omni-tool** | dark | holographic HUD — orange action accent on dark blue glass, cyan secondary signals, faint projection grid | `#FF9A1F` |
-| **Pure Reflection** | light | sterile white architecture, cold grey surfaces, near-black type and one saturated red accent; Inter + technical mono | `#E53935` |
+| **Pure Reflection** | light | the City of Glass: white / light-grey architecture, Runner's-Vision red, functional blue/orange/yellow districts, sharp geometry; Inter + technical mono | `#E10600` |
 | **Renaissance Steel** | dark | cold industrial station console — flat steel surfaces, 1 px frames, almost no glow | `#5FB4E6` |
 
 All four replace the complete `--dsw-*` semantic palette and paint an optional decorative
 layer (scanlines / grid / steel bezel / daylight and red corner marks) that can be switched
-off in one click. The three dark themes switch the whole interface to a monospace stack;
-Pure Reflection uses Inter for interface copy and keeps IBM Plex Mono for logs, code and
-technical data. The three dark themes are dark-only by design — a cinematic terminal should
-not change identity with the OS colour scheme; Pure Reflection is the light counterpart.
+off in one click (scanlines / grid / steel bezel / daylight, red brackets and a district
+signature). The three dark themes switch the whole interface to a monospace stack; Pure
+Reflection uses Inter for interface copy, keeps IBM Plex Mono for logs, code and technical
+data, and sharpens the host radius scale to 0–4 px. The three dark themes are dark-only by
+design — a cinematic terminal should not change identity with the OS colour scheme; Pure
+Reflection is the light counterpart.
 
 ## Install
 
@@ -56,7 +58,8 @@ bundle stack automatically. Git installs pin the exact commit; re-add the packag
 2. Under **Futuristic themes**, click one of the four cards.
 3. The whole application repaints immediately; the choice survives restarts.
 4. **Decorative effects** switches the atmospheric layer (scanlines / holographic grid /
-   steel bezel / daylight + red corner marks) on and off. The palette stays either way.
+   steel bezel / daylight, red brackets and the district signature) on and off. The palette
+   stays either way.
 5. **Standard appearance** returns to the built-in light/dark appearance you used before.
 
 The host's own **Appearance** row keeps working: choosing Light, Dark or System there exits
@@ -84,11 +87,15 @@ only imports `react` and the host services it declares (`theme`, `slots`, `local
 Decorations are a single `position: fixed` overlay with `pointer-events: none`; they are
 disabled automatically for `prefers-reduced-motion` and can be switched off entirely.
 
-Pure Reflection is the one light theme, so its palette carries a small set of documented
-overrides for values the dark-first derivation cannot express: white labels on red fills and
-on the switch thumb, host-dark tooltips/toasts, a darker error red and button hover, a
-readable caption grade and a lighter modal scrim. Its warning role is `#D25C28` rather than
-the brief's `#E16A32`, which measures only 2.78:1 on the secondary surface.
+Pure Reflection is the one light theme, so it registers 136 tokens (127 derived + 9
+light/district tokens) and carries 24 documented overrides for
+values the dark-first derivation cannot express: white labels on red fills and on the switch
+thumb, host-dark tooltips/toasts, a darker error red and button hover, a readable caption
+grade, a lighter modal scrim, and the district tokens the role schema does not expose — blue
+links/info/charts and the Preview badge, yellow technical charts, red selected border and
+trajectory, amber “done”. Its warning role is `#D9480F` rather than the brief's `#E16A32`,
+which measures only 2.78:1 on the secondary surface; the brighter district orange `#F76707`
+appears in the picker swatch and effect signature, not as text.
 
 ### Typography
 
@@ -126,7 +133,7 @@ $NODE scripts/preview.mjs          # build/preview.html + build/theme-<id>.html
 ## Compatibility
 
 Tested against DeepSeek Harness Desktop **0.2.1-rc.5** and the matching `dsh web`; the light
-theme was additionally smoke-tested live on Desktop **0.2.2-rc.2**. Requires the host
+theme was additionally smoke-tested live on Desktop **0.2.2-rc.2** and **0.2.2-rc.3**. Requires the host
 theme extension point (`@deepseek-ai/dsh-client-ui-theme`) and the `settings.general.item`
 slot; both are shipped in 0.2.x. On a host that lacks them the plugin still loads and
 registers its themes, but the settings row is skipped with a console warning.

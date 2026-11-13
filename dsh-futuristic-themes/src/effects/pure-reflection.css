@@ -1,28 +1,32 @@
-/* Pure Reflection — sterile white architecture lit from above. A cool daylight
-   wash, two red hairline corner marks, one chamfered corner and a restrained
-   edge vignette. No scanlines, no noise, no flicker, no glow and no animation:
-   the effect is the light in the room, not a texture on the text. Decorative
-   only — paints the plugin's #dsh-ft-overlay pseudo-elements, never app
-   content, never pointer events. */
+/* Pure Reflection — City of Glass: sterile white architecture, a cool daylight
+   wash, Runner's-Vision red corner marks and a small blue/orange/yellow
+   district signature. No scanlines, no noise, no flicker, no glow and no
+   animation: the effect is signage on the city, not a texture on the text.
+   Decorative only — paints the plugin's #dsh-ft-overlay pseudo-elements,
+   never app content, never pointer events. */
 
 body[data-dsh-futuristic-theme="pure-reflection"][data-dsh-futuristic-effects="on"] #dsh-ft-overlay::before {
   background:
-    /* Red geometric mark in the top-right corner — the theme's only loud note. */
-    linear-gradient(to right, rgba(229, 57, 53, 0.42), rgba(229, 57, 53, 0.42)) 100% 0 / 26px 1px no-repeat,
-    linear-gradient(to bottom, rgba(229, 57, 53, 0.42), rgba(229, 57, 53, 0.42)) 100% 0 / 1px 26px no-repeat,
+    /* Runner's Vision: a red L-bracket in the top-right corner, marking the route. */
+    linear-gradient(to right, rgba(225, 6, 0, 0.55), rgba(225, 6, 0, 0.55)) 100% 0 / 26px 1px no-repeat,
+    linear-gradient(to bottom, rgba(225, 6, 0, 0.55), rgba(225, 6, 0, 0.55)) 100% 0 / 1px 26px no-repeat,
     /* Overhead daylight: white at the top edge, dying out above the first row of cards. */
-    radial-gradient(ellipse 118% 52% at 50% -14%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 64%),
-    /* Cool floor bounce along the bottom edge. */
-    radial-gradient(ellipse 92% 38% at 50% 112%, rgba(211, 215, 211, 0.36), rgba(211, 215, 211, 0) 68%),
+    radial-gradient(ellipse 118% 52% at 50% -14%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 64%),
+    /* Cool floor bounce along the bottom edge — grey shadow under white walls. */
+    radial-gradient(ellipse 92% 38% at 50% 112%, rgba(201, 208, 214, 0.38), rgba(201, 208, 214, 0) 68%),
     /* A restrained vignette seats the white canvas in its frame. */
-    radial-gradient(ellipse 128% 104% at 50% 48%, transparent 66%, rgba(32, 36, 38, 0.055) 100%);
+    radial-gradient(ellipse 128% 104% at 50% 48%, transparent 66%, rgba(20, 24, 28, 0.05) 100%);
 }
 
 body[data-dsh-futuristic-theme="pure-reflection"][data-dsh-futuristic-effects="on"] #dsh-ft-overlay::after {
   background:
-    /* Bottom-right red mark, matching the top-right one. */
-    linear-gradient(to right, rgba(229, 57, 53, 0.42), rgba(229, 57, 53, 0.42)) 100% 100% / 26px 1px no-repeat,
-    linear-gradient(to bottom, rgba(229, 57, 53, 0.42), rgba(229, 57, 53, 0.42)) 100% 100% / 1px 26px no-repeat,
-    /* One chamfered corner: a hairline cut 58 px in from the bottom-right. */
-    linear-gradient(135deg, rgba(32, 36, 38, 0.1) 0px, rgba(32, 36, 38, 0.1) 1px, transparent 1px) 100% 100% / 58px 58px no-repeat;
+    /* The matching red route bracket in the bottom-right corner. */
+    linear-gradient(to right, rgba(225, 6, 0, 0.55), rgba(225, 6, 0, 0.55)) 100% 100% / 26px 1px no-repeat,
+    linear-gradient(to bottom, rgba(225, 6, 0, 0.55), rgba(225, 6, 0, 0.55)) 100% 100% / 1px 26px no-repeat,
+    /* One chamfered corner: a red hairline cut 58 px in from the bottom-right. */
+    linear-gradient(135deg, rgba(225, 6, 0, 0.38) 0px, rgba(225, 6, 0, 0.38) 1px, transparent 1px) 100% 100% / 58px 58px no-repeat,
+    /* District signature: business blue, residential orange, technical yellow. */
+    linear-gradient(to right, rgba(30, 111, 217, 0.7), rgba(30, 111, 217, 0.7)) 0 calc(100% - 9px) / 22px 1px no-repeat,
+    linear-gradient(to right, rgba(247, 103, 7, 0.7), rgba(247, 103, 7, 0.7)) 0 calc(100% - 5px) / 22px 1px no-repeat,
+    linear-gradient(to right, rgba(242, 194, 0, 0.8), rgba(242, 194, 0, 0.8)) 0 100% / 22px 1px no-repeat;
 }

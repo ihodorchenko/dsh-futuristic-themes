@@ -81,17 +81,20 @@ function mockPage(theme) {
         : "--dsw-alias-state-business-primary";
   const noticeGlyph = notification.kind === "warning" ? "▲" : notification.kind === "success" ? "✓" : "ℹ";
 
-  /* Light themes keep neutral metrics quiet: only the warning bar carries an
-     accent, per the theme briefs. */
-  const neutralMetricTone = raw.colorScheme === "light" ? "--dsw-alias-label-tertiary" : undefined;
+  /* The light city theme maps its district colours onto the metrics: business
+     blue for CPU, technical yellow for memory, residential orange for the
+     warning metric. The dark themes keep their single accent. */
+  const districtMetrics = raw.colorScheme === "light";
+  const cpuTone = districtMetrics ? "--dsw-alias-chart-messages" : undefined;
+  const memTone = districtMetrics ? "--dsw-alias-chart-tools" : undefined;
 
   const metricBlock =
     metrics === "gauge"
       ? `<div class="gauge" style="background:conic-gradient(var(--dsw-alias-brand-primary) 0 78%, var(--dsw-alias-bg-layer-3) 78% 100%)"><div class="gaugeInner">78%</div></div>
          <div class="metricLabel">Memory Usage</div>
          <svg class="spark" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,30 14,26 26,31 38,18 50,22 62,12 74,16 86,9 98,14 110,6 120,10" fill="none" stroke="var(--dsw-alias-label-deep-diving)" stroke-width="1.5"/></svg>`
-      : `<div class="metric"><span class="metricName">CPU</span><div class="metricRow">${bar(23, false, neutralMetricTone)}<b>23%</b></div></div>
-         <div class="metric"><span class="metricName">MEM</span><div class="metricRow">${bar(67, false, neutralMetricTone)}<b>67%</b></div></div>
+      : `<div class="metric"><span class="metricName">CPU</span><div class="metricRow">${bar(23, false, cpuTone)}<b>23%</b></div></div>
+         <div class="metric"><span class="metricName">MEM</span><div class="metricRow">${bar(67, false, memTone)}<b>67%</b></div></div>
          <div class="metric"><span class="metricName">TEMP</span><div class="metricRow">${bar(58, true)}<b>42°C</b></div></div>`;
 
   const cards = Object.keys(themeById)

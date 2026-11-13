@@ -11,6 +11,11 @@ documentation; the engineering documentation is in English elsewhere in this rep
 | **Pure Reflection** | [Pure-Reflection.md](Pure-Reflection.md) | Light theme inspired by the first *Mirror's Edge*: sterile white architecture, cold grey surfaces, near-black typography and saturated red as the single accent. Exact tokens (`bg #F4F5F2`, `surface #FFFFFF`, `surfaceAlt #E9EBE8`, `border #D3D7D3`, `dim #89918F`, `primary #E53935`, `bright #FF514A`, `text #202426`, `secondary #687174`, `ok #568C72`, `warning #E16A32`), Inter for interface copy with IBM Plex Mono for logs/code/metrics, thin 1 px borders, mostly straight corners with chamfered panels, restrained daylight/grid decoration (no scanlines, glow or motion), component states, the Harness screen layout and a "ready" criterion. |
 | **Renaissance Steel** | [Renaissance-Steel.md](Renaissance-Steel.md) | Restrained industrial console in a cold grey-blue palette, inspired by a space-station terminal; less glow and fewer CRT effects than Nostromo Amber, prioritising clear hierarchy, stable readability and comfort for long sessions. Exact tokens (`bg #07090C`, `surface #0E1318`, `border #26323D`, `dim #4F6A80`, `primary #5FB4E6`, `bright #9AD7FF`, `text #BCD0E0`, `secondary #8A99A6`, `warning #E2553F`, `ok #5FD3B0`), flat surfaces, thin 1 px frames, optional amber accent, very weak glow/texture, component states, Harness layout, accessibility checks and readiness criterion. |
 
+Pure Reflection's first implementation was refined by the
+[City of Glass addendum](Pure-Reflection-Addendum.md) (2026-11-13): white / light-grey
+architecture, Runner's-Vision red, functional blue / orange / yellow district colours and sharp
+geometry.
+
 The rendered concept the **first three** briefs were based on is
 [concept-rendering.png](concept-rendering.png) (the original 1536×1024 image). Pure Reflection
 is a standalone brief with no concept rendering.
